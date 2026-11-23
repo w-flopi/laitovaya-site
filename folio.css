@@ -198,3 +198,25 @@ dialog::backdrop{background:#200709cd}
 .section-heading .section-lettering,.booking-panel .section-lettering{font-size:clamp(1.72rem,3.35vw,3.65rem)}
 .steps .section-lettering{font-size:clamp(.91rem,1.22vw,1.24rem);row-gap:.24em}
 @media(max-width:370px){.section-heading .section-lettering,.booking-panel .section-lettering{font-size:1.52rem}}
+
+.booking-month-nav{display:grid;grid-template-columns:38px 1fr 38px;align-items:center;
+  text-align:center;gap:7px;margin-bottom:10px}
+.booking-month-nav button{height:36px;border:1px solid var(--line);border-radius:4px;color:var(--ink);
+  background:var(--surface);font-size:1.3rem}
+.booking-month-nav button:disabled{opacity:.35}
+#booking-month{font-weight:600;text-transform:capitalize}
+.booking-weekdays,#booking-dates{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.booking-weekdays{font-size:.72rem;text-align:center;color:var(--mute);margin-bottom:5px}
+#booking-dates label>span{min-height:41px;line-height:1.05;gap:3px;padding:4px 0}
+#booking-dates label:has(input:disabled){opacity:.36}
+#booking-dates .day-full>span{background:transparent}
+.booking-legend{display:flex;flex-wrap:wrap;gap:15px;margin-top:8px;color:var(--mute);font-size:.73rem}
+.booking-times>p{grid-column:1/-1;color:var(--mute);font-size:.84rem}
+.booking-links{display:flex;gap:12px;flex-wrap:wrap}
+.booking-links a{text-decoration:underline;text-underline-offset:3px}
+.booking-email-note{margin-top:12px;color:var(--mute);font-size:.78rem}
+
+.scroll-in{animation:section-arrival .65s cubic-bezier(.2,.68,.24,1) both}
+.gallery-controls.scroll-in,.booking-details.scroll-in{animation-delay:.08s}
+@keyframes section-arrival{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.scroll-in{animation:none}}

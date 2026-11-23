@@ -68,11 +68,56 @@
   <section class="booking-area" aria-label="Запись и контакты">
   <section class="booking-panel" id="booking" aria-labelledby="booking-title">
     <h3 id="booking-title" class="section-lettering" aria-label="Запись на мастер-класс"><svg viewBox="0 0 327 60" style="width:5.450em" aria-hidden="true" focusable="false"><path transform="translate(0)" d="M2 8Q12 0 26 0Q47 0 47 16Q47 25 38 29Q47 32 47 44Q47 60 24 60Q10 60 0 51L7 41Q15 48 24 48Q34 48 34 42Q34 36 24 36H17V25H24Q34 25 34 18Q34 12 24 12Q16 12 9 18Z"/><path transform="translate(52)" d="M24 0H31L55 60H41L37 49H18L14 60H0ZM22 38H33L27.5 23Z"/><path transform="translate(112)" d="M0 0H51V60H38V12H13V60H0Z"/><path transform="translate(168)" d="M0 0H13V34L39 0H52V60H39V25L13 60H0Z"/><path transform="translate(225)" d="M50 8 42 19Q36 13 27 13Q13 13 13 30Q13 47 27 47Q36 47 43 40L51 49Q41 60 27 60Q0 60 0 30Q0 0 27 0Q40 0 50 8Z"/><path transform="translate(282)" d="M0 0H13V22H24Q45 22 45 41Q45 60 24 60H0ZM13 34V48H24Q32 48 32 41Q32 34 24 34Z"/></svg><svg viewBox="0 0 111 60" style="width:1.850em" aria-hidden="true" focusable="false"><path transform="translate(0)" d="M0 0H13V23H38V0H51V60H38V36H13V60H0Z"/><path transform="translate(56)" d="M24 0H31L55 60H41L37 49H18L14 60H0ZM22 38H33L27.5 23Z"/></svg><svg viewBox="0 0 656 60" style="width:10.933em" aria-hidden="true" focusable="false"><path transform="translate(0)" d="M0 0H13L31 27L49 0H62V60H49V22L31 47L13 22V60H0Z"/><path transform="translate(67)" d="M24 0H31L55 60H41L37 49H18L14 60H0ZM22 38H33L27.5 23Z"/><path transform="translate(127)" d="M50 8 42 19Q36 13 27 13Q13 13 13 30Q13 47 27 47Q36 47 43 40L51 49Q41 60 27 60Q0 60 0 30Q0 0 27 0Q40 0 50 8Z"/><path transform="translate(184)" d="M0 0H48L43 12H30V60H17V12H0Z"/><path transform="translate(237)" d="M0 0H44L39 12H13V24H37V36H13V48H44V60H0Z"/><path transform="translate(286)" d="M0 0H27Q49 0 49 20Q49 40 27 40H13V60H0ZM13 12V28H26Q36 28 36 20Q36 12 26 12Z"/><path transform="translate(340)" d="M0 25H25V36H0Z"/><path transform="translate(370)" d="M0 0H13V24H17L35 0H51L29 29L51 60H35L17 36H13V60H0Z"/><path transform="translate(426)" d="M18 0H56V60H43V12H29L23 42Q19 60 0 60V48Q8 48 11 37Z"/><path transform="translate(487)" d="M24 0H31L55 60H41L37 49H18L14 60H0ZM22 38H33L27.5 23Z"/><path transform="translate(547)" d="M50 8 42 19Q36 13 27 13Q13 13 13 30Q13 47 27 47Q36 47 43 40L51 49Q41 60 27 60Q0 60 0 30Q0 0 27 0Q40 0 50 8Z"/><path transform="translate(604)" d="M50 8 42 19Q36 13 27 13Q13 13 13 30Q13 47 27 47Q36 47 43 40L51 49Q41 60 27 60Q0 60 0 30Q0 0 27 0Q40 0 50 8Z"/></svg></h3>
-    <div class="booking-notice">
-      <p>Чтобы узнать ближайшие даты, стоимость и наличие мест, напишите в мастерскую.</p>
-      <a class="button" href="https://t.me/+79996607737">Уточнить даты и записаться в Telegram</a>
+    <div class="booking-notice" id="booking-help">
+      <strong>Расписание мастерской</strong>
+      <p>Мастер-классы проходят ежедневно с 12:00 до 18:00 по Москве. Занятие длится 2 часа. После записи откроется черновик письма с данными заявки.</p>
+      <a href="https://t.me/+79996607737">Связаться с мастерской в Telegram</a>
     </div>
-
+    <form id="booking-form" aria-describedby="booking-help">
+      <div class="booking-schedule">
+        <div class="schedule-status">
+          <p id="booking-freshness" role="status">Загружаем расписание…</p>
+          <button id="booking-refresh" type="button">Обновить</button>
+        </div>
+        <fieldset class="booking-option-group">
+          <legend>1. Выберите дату</legend>
+          <div class="booking-month-nav">
+            <button id="booking-prev" type="button" aria-label="Предыдущий месяц" disabled>‹</button>
+            <p id="booking-month" aria-live="polite"></p>
+            <button id="booking-next" type="button" aria-label="Следующий месяц" disabled>›</button>
+          </div>
+          <div class="booking-weekdays" aria-hidden="true"><span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span></div>
+          <div id="booking-dates" class="booking-dates"></div>
+          <p class="booking-legend"><span>● Есть время</span><span>— Всё занято</span></p>
+        </fieldset>
+        <fieldset class="booking-option-group">
+          <legend>2. Выберите время по Москве</legend>
+          <div id="booking-times" class="booking-times"></div>
+        </fieldset>
+      </div>
+      <div class="booking-details">
+        <div class="booking-fields">
+          <label class="booking-guests" for="booking-guests">
+            <span class="booking-guests-label">Количество участников <output id="booking-guest-count" for="booking-guests">1</output></span>
+            <input type="range" id="booking-guests" name="guests" min="1" max="20" value="1" step="1">
+            <span aria-hidden="true" class="booking-range-scale"><span>1</span><span>20</span></span>
+          </label>
+          <label>Имя<input name="name" autocomplete="name" maxlength="100" pattern=".*\S.*" required></label>
+          <label>Телефон или email для ответа<input name="contact" maxlength="150" pattern=".*\S.*" required></label>
+          <label class="booking-note">Комментарий (по желанию)<textarea name="comment" rows="2" maxlength="700"></textarea></label>
+        </div>
+        <div class="booking-summary">
+          <p id="booking-selection">Выберите свободное время, чтобы подготовить заявку.</p>
+          <button class="booking" type="submit" disabled>Записаться</button>
+        </div>
+        <p class="booking-status" id="booking-status" role="status"></p>
+        <div class="booking-links">
+          <a id="booking-draft" href="#" hidden>Открыть письмо ещё раз</a>
+          <a id="booking-telegram" href="https://t.me/+79996607737" hidden>Отправить данные в Telegram</a>
+        </div>
+        <p class="booking-email-note">Адрес в почтовом шаблоне тестовый. Для связи с мастерской используйте Telegram.</p>
+      </div>
+    </form>
   </section>
     <nav class="contacts" aria-label="Контакты мастерской">
       <a href="https://t.me/+79996607737">Написать в Telegram</a>
@@ -96,6 +141,6 @@
 </dialog>
 <script id="media-data" type="application/json">[{"title": "Светильники в мастерской", "group": "Светильники", "image": "./media/reel-0.jpg", "video": "./clips/0.mp4", "original": "https://www.instagram.com/laitovayaru/reel/DfaG5Tasbiw/"}, {"title": "Обработка деревянной основы", "group": "Процесс", "image": "./media/reel-1.jpg", "video": "./clips/1.mp4", "original": "https://www.instagram.com/laitovayaru/reel/DfVPKy9MX_g/"}, {"title": "Примерка деталей", "group": "Процесс", "image": "./media/reel-2.jpg", "video": "./clips/2.mp4", "original": "https://www.instagram.com/laitovayaru/reel/DfuUfqksEsn/"}, {"title": "Сборка светильника", "group": "Процесс", "image": "./media/reel-3.jpg", "video": "./clips/3.mp4", "original": "https://www.instagram.com/laitovayaru/reel/Dd4Jf-8sqV0/"}, {"title": "Семейный мастер-класс", "group": "Мастерская", "image": "./media/reel-4.jpg", "video": "./clips/4.mp4", "original": "https://www.instagram.com/laitovayaru/reel/Df-L7H6sXTe/"}, {"title": "Работа с патроном", "group": "Процесс", "image": "./media/reel-5.jpg", "video": "./clips/5.mp4", "original": "https://www.instagram.com/laitovayaru/reel/DfxWbLDs4uB/"}, {"title": "Обработка ветки", "group": "Процесс", "image": "./media/reel-6.jpg", "video": "./clips/6.mp4", "original": "https://www.instagram.com/laitovayaru/reel/Dd4Jf-8sqV0/"}, {"title": "Подарочный сертификат", "group": "Мастерская", "image": "./media/reel-7.jpg", "video": "./clips/7.mp4", "original": "https://www.instagram.com/laitovayaru/reel/DfrxM87Mmii/"}, {"title": "Готовый светильник", "group": "Светильники", "image": "./media/photo-0.jpg?v=2"}, {"title": "Вход в мастерскую", "group": "Мастерская", "image": "./media/photo-1.webp"}, {"title": "Команда «Лайтовой»", "group": "Мастерская", "image": "./media/photo-2.webp"}, {"title": "Деревянная стойка", "group": "Процесс", "image": "./media/photo-3.jpg"}, {"title": "Подготовка дерева", "group": "Процесс", "image": "./media/photo-4.jpg"}, {"title": "Детали светильника", "group": "Процесс", "image": "./media/photo-5.jpg"}, {"title": "У верстака", "group": "Процесс", "image": "./media/photo-6.jpg"}, {"title": "Участники мастер-класса", "group": "Мастерская", "image": "./media/photo-7.jpg"}, {"title": "Лампочка крупным планом", "group": "Светильники", "image": "./media/photo-lamp-detail.jpg"}]</script>
 <script type="module" src="./folio.js"></script>
-
+<script type="module" src="./booking.js"></script>
 </body>
 </html>

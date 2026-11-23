@@ -271,6 +271,18 @@ const stepObserver = new IntersectionObserver(entries => {
 }, {threshold:.25});
 steps.forEach(step=>stepObserver.observe(step));
 
+const revealItems=document.querySelectorAll(
+  '.section-heading, .gallery-controls, .booking-panel > h3, .booking-notice, .booking-schedule, .booking-details'
+);
+const revealObserver=new IntersectionObserver(entries=>{
+  for (const entry of entries) {
+    if (!entry.isIntersecting) continue;
+    entry.target.classList.add('scroll-in');
+    revealObserver.unobserve(entry.target);
+  }
+},{threshold:0,rootMargin:'0px 0px -8% 0px'});
+revealItems.forEach(item=>revealObserver.observe(item));
+
 function createGalleryTransition() {
   const layer = element('div','gallery-flight');
   layer.setAttribute('aria-hidden','true');
@@ -289,25 +301,35 @@ function createGalleryTransition() {
     return {book,target,card};
   });
   const state = {active:false,dirty:true,update,reset};
+  let displayed=0;
   function reset() {
     state.active=false;
     state.dirty=true;
+    displayed=0;
     orbit.classList.remove('is-morphing');
     for (const pair of pairs) {
       pair.target.style.removeProperty('--landing-opacity');
       pair.card.hidden=true;
     }
   }
-  function update() {
+  function update(dt) {
     state.dirty=false;
     const y=scrollY, viewport=innerHeight, box=orbit.getBoundingClientRect();
     const heroTop=box.top+y;
     const start=heroTop+box.height*.08;
     const finish=Math.max(start+box.height*.52,
       mediaGrid.getBoundingClientRect().top+y-viewport*.36);
-    const progress=Math.max(0,Math.min(1,(y-start)/(finish-start)));
-    if (reduce.matches || !progress || progress>=1 || dialog.open) {
+    const wanted=Math.max(0,Math.min(1,(y-start)/(finish-start)));
+    if (reduce.matches || dialog.open || y>finish+viewport*.72 || (!state.active && (wanted===0 || wanted===1))) {
       if(state.active) {reset();state.dirty=false;}
+      return;
+    }
+    displayed+=(wanted-displayed)*(1-Math.exp(-dt*9));
+    if (Math.abs(wanted-displayed)<.006) displayed=wanted;
+    const progress=displayed;
+    if (progress===0 || progress===1) {
+      if (state.active) {reset();state.dirty=false;}
+      else if(wanted!==progress) state.dirty=true;
       return;
     }
     if(!state.active){
@@ -347,7 +369,7 @@ function frame(time) {
     if (!reduce.matches) {phase += dt*.026+spin;spin*=.91;}
     paint(time,false,dt);
   }
-  if (transition.dirty || transition.active) transition.update();
+  if (transition.dirty || transition.active) transition.update(dt);
   requestAnimationFrame(frame);
 }
 resize();

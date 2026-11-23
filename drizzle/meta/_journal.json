@@ -2,6 +2,19 @@
   "version": "7",
   "dialect": "sqlite",
   "entries": [
-    {"idx": 0, "version": "6", "when": 1795392000000, "tag": "0000_bookings", "breakpoints": true}
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1795392000000,
+      "tag": "0000_bookings",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1795417200000,
+      "tag": "0001_workshop_bookings",
+      "breakpoints": true
+    }
   ]
 }

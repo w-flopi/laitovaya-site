@@ -13,7 +13,6 @@ const telegram = document.getElementById('booking-telegram');
 const api = location.hostname === 'w-flopi.github.io'
   ? 'https://vante-craft-in-motion.isievemil.chatgpt.site' : '';
 const submit = form.querySelector('button[type="submit"]');
-const draft = document.getElementById('booking-draft');
 const status = document.getElementById('booking-status');
 const monthFormat = new Intl.DateTimeFormat('ru-RU', {month:'long',year:'numeric',timeZone:'UTC'});
 const longFormat = new Intl.DateTimeFormat('ru-RU', {dateStyle:'long', timeZone:'UTC'});
@@ -151,13 +150,12 @@ dates.addEventListener('change',event=>{
 });
 times.addEventListener('change',event=>{time=event.target.value;summary();});
 guests.addEventListener('input',summary);
-form.addEventListener('input',()=>{draft.hidden=true;telegram.hidden=true;status.textContent='';});
+form.addEventListener('input',()=>{telegram.hidden=true;status.textContent='';});
 form.addEventListener('submit',async event=>{
   event.preventDefault();
   if (submit.disabled || !form.reportValidity()) return;
   const fields=Object.fromEntries(new FormData(form));
   submitting=true;
-  draft.hidden=true;
   telegram.hidden=true;
   summary();
   try {
@@ -171,24 +169,25 @@ form.addEventListener('submit',async event=>{
       return;
     }
     if (!response.ok) throw new Error('Ошибка записи');
-    const {recipient}=await response.json();
+    const endHour = String(Number(fields.time.slice(0,2)) + 2).padStart(2,'0');
+    const endTime = endHour + fields.time.slice(2);
     const lines=[
-      'Здравствуйте! Хочу записаться на мастер-класс по изготовлению светильника.',
+      'Новая заявка · мастер-класс по светильникам',
       '',
       'Дата: '+formatDate(fields.date),
-      'Время: '+fields.time+' (Москва)',
+      'Время: '+fields.time+'–'+endTime+' (МСК)',
+      'Гостей: '+fields.guests,
+      '',
       'Имя: '+fields.name.trim(),
-      'Участников: '+fields.guests,
-      'Контакт для ответа: '+fields.contact.trim()
+      'Контакт для связи: '+fields.contact.trim()
     ];
     if (fields.comment.trim()) lines.push('','Комментарий: '+fields.comment.trim());
-    draft.href='mailto:'+recipient+'?subject='+encodeURIComponent('Запись на мастер-класс «Лайтовой»')+
-      '&body='+encodeURIComponent(lines.join('\r\n'));
-    draft.hidden=false;
-    telegram.href='https://t.me/+79996607737?text='+encodeURIComponent(lines.join('\n'));
+    const chat = new URL(telegram.getAttribute('href').split('?')[0]);
+    chat.searchParams.set('text',lines.join('\n'));
+    telegram.href=chat.href;
     telegram.hidden=false;
-    status.textContent='Время занято за вашей заявкой. Для подтверждения отправьте данные мастерской в Telegram. Адрес в письме тестовый.';
-    window.location.href=draft.href;
+    status.textContent='Время зарезервировано. Нажмите «Отправить» в Telegram, чтобы менеджер получил заявку.';
+    window.location.assign(chat.href);
     await refresh();
   } catch {
     status.textContent='Не удалось получить подтверждение записи. Расписание будет обновлено.';

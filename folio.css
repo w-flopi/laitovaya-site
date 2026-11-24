@@ -80,7 +80,6 @@ h1,h2,h3,p,figure{margin:0}
 
 .booking-panel .booking:disabled{opacity:.56;cursor:default}
 .booking-status:not(:empty){margin:12px 0}
-#booking-draft{text-decoration:underline}
 .contacts{display:flex;gap:22px;flex-wrap:wrap;margin-top:31px}
 dialog{width:min(900px,calc(100% - 26px));max-height:90svh;border:0;border-radius:9px;padding:0;background:var(--paper);color:var(--ink)}
 dialog::backdrop{background:#200709cd}
@@ -215,7 +214,6 @@ dialog::backdrop{background:#200709cd}
 .booking-times>p{grid-column:1/-1;color:var(--mute);font-size:.84rem}
 .booking-links{display:flex;gap:12px;flex-wrap:wrap}
 .booking-links a{text-decoration:underline;text-underline-offset:3px}
-.booking-email-note{margin-top:12px;color:var(--mute);font-size:.78rem}
 
 .scroll-in{animation:section-arrival .65s cubic-bezier(.2,.68,.24,1) both}
 .gallery-controls.scroll-in,.booking-details.scroll-in{animation-delay:.08s}

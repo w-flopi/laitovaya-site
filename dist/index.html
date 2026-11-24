@@ -26,23 +26,18 @@
 .footer-grid a:hover{color:var(--ink)}
 .footer-brand{font-size:1.45rem}
 @media(max-width:760px){.visit-grid,.footer-grid{grid-template-columns:1fr}}
+#workshop .step-image{max-height:clamp(155px,25svh,235px)}
 .lamp-showcase{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
-.lamp-showcase article{min-width:0}
-.lamp-photo{position:relative;overflow:hidden;height:clamp(128px,19vw,165px);border-radius:3px;background:var(--surface);margin-bottom:15px}
-.lamp-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.lamp-photo--left img{inset:0 auto auto 50%;width:auto;height:205%;max-width:none;transform:translateX(-25%);clip-path:inset(0 50% 51% 0)}
-.lamp-photo--light img{object-position:50% 64%}
+.lamp-showcase article{min-width:0;border-top:1px solid var(--line);padding-top:16px}
 .lamp-word{text-shadow:0 0 .48em #f4ab6678,0 0 .95em #f4ab664c}
-.lamp-photo--pro img{object-position:50% 40%}
-.lamp-caption h3{font-size:1.14rem;line-height:1.3;margin-bottom:9px}
-.lamp-caption p{color:var(--mute);font-size:.96rem;max-width:36ch}
-.lamp-caption strong{color:var(--ink)}
+.lamp-showcase h3{font-size:clamp(1.45rem,2.8vw,2.45rem);line-height:1.1;margin-bottom:10px}
+.lamp-showcase p{color:var(--mute);font-size:.96rem;max-width:36ch}
+.lamp-showcase .lamp-type{color:var(--ink);font-weight:650;margin-bottom:5px}
 .visit-extra{margin-top:clamp(25px,5vw,60px);padding-top:24px;border-top:1px solid var(--line)}
 .visit-extra .visit-grid article{border:0;padding-top:0}
 .visit-special{color:var(--mute);margin-top:22px;padding-top:16px;border-top:1px solid var(--line)}
 @media(max-width:660px){
  .lamp-showcase{grid-template-columns:1fr;gap:18px}
- .lamp-photo{height:clamp(120px,37vw,165px)}
 }
 </style>
 </head>
@@ -103,16 +98,19 @@
     <h2 id="visit-formats">Выбери свой <span class="lamp-word">ламповый</span> светильник</h2>
     <div class="lamp-showcase">
       <article>
-        <figure class="lamp-photo lamp-photo--light"><img src="./media/photo-0.jpg?v=2" alt="Настольный светильник с деревянным основанием и подвесным абажуром" loading="lazy" decoding="async"></figure>
-        <div class="lamp-caption"><h3>Лайт</h3><p><strong>Настольный.</strong> Компактный светильник с абажуром на выбор.</p></div>
+        <h3>Лайт</h3>
+        <p class="lamp-type">Настольный светильник</p>
+        <p>Компактная модель с абажуром на выбор.</p>
       </article>
       <article>
-        <figure class="lamp-photo lamp-photo--left"><img src="./media/lamp-format-expert.jpg" alt="Напольный светильник на высокой деревянной стойке" loading="lazy" decoding="async"></figure>
-        <div class="lamp-caption"><h3>Эксперт</h3><p><strong>Напольный.</strong> Светильник на деревянной стойке с абажуром на выбор.</p></div>
+        <h3>Эксперт</h3>
+        <p class="lamp-type">Напольный светильник</p>
+        <p>Высокая деревянная стойка и абажур на выбор.</p>
       </article>
       <article>
-        <figure class="lamp-photo lamp-photo--pro"><img src="./media/lamp-format-pro.jpg" alt="Арт-светильник с фигурной лампой и изогнутой деревянной стойкой" loading="lazy" decoding="async"></figure>
-        <div class="lamp-caption"><h3>Профи</h3><p><strong>С фигурной лампой.</strong> Можно сделать настольный или напольный светильник.</p></div>
+        <h3>Профи</h3>
+        <p class="lamp-type">Светильник с фигурной лампой</p>
+        <p>Настольный или напольный вариант по вашей задумке.</p>
       </article>
     </div>
     <div class="visit-extra">

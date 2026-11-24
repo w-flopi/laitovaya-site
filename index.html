@@ -11,20 +11,21 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&amp;family=Russo+One&amp;display=swap">
 <link rel="stylesheet" href="./folio.css?v=3">
 <style>
-.visit-info > h2,.guest-reviews > h2{font-size:clamp(1.8rem,4vw,3.5rem);line-height:1.05;margin-bottom:clamp(24px,4vw,40px)}
+.visit-info > h2,.visit-place > h2{font-size:clamp(1.8rem,4vw,3.5rem);line-height:1.05;margin-bottom:clamp(24px,4vw,40px)}
 .visit-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:clamp(24px,5vw,72px)}
 .visit-grid article{border-top:1px solid var(--line);padding-top:18px}
-.visit-grid h3,.visit-address h2{font-size:clamp(1.2rem,2.35vw,1.8rem);line-height:1.15}
-.visit-grid p,.visit-address p{color:var(--mute);margin:12px 0 16px;max-width:48ch}
-.visit-address{border-top:1px solid var(--line);margin-top:clamp(36px,6vw,76px);padding-top:24px}
-.guest-reviews blockquote{margin:0;padding:clamp(20px,5vw,46px) 0;border-block:1px solid var(--line)}
-.guest-reviews blockquote p{font-size:clamp(1.25rem,3vw,2.35rem);line-height:1.25;max-width:42ch}
-.guest-reviews blockquote footer{color:var(--mute);margin-top:14px}
-.review-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-block:18px}
-.review-controls button{min-height:44px;padding:6px 13px;border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:4px}
-.review-controls button:hover{background:var(--surface)}
-.review-count{min-width:4em;text-align:center;color:var(--mute)}
-@media(max-width:760px){.visit-grid{grid-template-columns:1fr}}
+.visit-grid h3,.visit-card h3{font-size:clamp(1.2rem,2.35vw,1.8rem);line-height:1.15}
+.visit-grid p,.visit-card p{color:var(--mute);margin:12px 0 16px;max-width:48ch}
+.visit-widget{display:block;width:100%;height:clamp(330px,42vw,480px);border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+.visit-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:16px 0 0}
+.site-footer{border-top:1px solid var(--line);background:var(--media);padding:clamp(30px,5vw,60px) max(6vw,22px)}
+.footer-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:clamp(22px,5vw,66px)}
+.footer-grid nav{display:grid;justify-items:start;align-content:start;gap:8px}
+.footer-grid p,.footer-grid a{color:var(--mute)}
+.footer-grid p{margin-top:6px;max-width:30ch}
+.footer-grid a:hover{color:var(--ink)}
+.footer-brand{font-size:1.45rem}
+@media(max-width:760px){.visit-grid,.footer-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -148,32 +149,50 @@
       </div>
     </form>
   </section>
-    <section class="visit-address" aria-labelledby="visit-address">
-      <h2 id="visit-address">Как добраться</h2>
-      <p>Москва, Ленинградский проспект, 24<br>Метро «Белорусская»</p>
-      <a class="button" href="https://yandex.ru/maps/?mode=routes&amp;rtext=~55.782405%2C37.574309">Построить маршрут</a>
-    </section>
-    <nav class="contacts" aria-label="Контакты мастерской">
-      <a href="https://t.me/+79996607737">Написать в Telegram</a>
-      <a href="https://t.me/+79996607737">Подарочный сертификат</a>
-      <a href="https://www.instagram.com/laitovayaru/">Instagram мастерской</a>
-    </nav>
   </section>
-  <section class="workshop guest-reviews" id="reviews" aria-labelledby="guest-reviews-title">
-    <h2 id="guest-reviews-title">Отзывы о мастерской</h2>
-    <div id="review-slides" aria-live="polite">
-      <blockquote><p>«Технику объяснили, сложные элементы наглядно показали».</p><footer>Виталий Демидов, Яндекс Карты</footer></blockquote>
-      <blockquote><p>«В мастерской все есть - материал , инструмент , расходники».</p><footer>Vladimir Sm, Яндекс Карты</footer></blockquote>
-      <blockquote><p>«Дома светильник вписался шикарно».</p><footer>Р, Яндекс Карты</footer></blockquote>
+  <section class="workshop visit-place" id="visit-address" aria-labelledby="visit-place-title">
+    <h2 id="visit-place-title">Мастерская на Белорусской</h2>
+    <div class="visit-grid">
+      <section class="visit-card" aria-labelledby="visit-map-title">
+        <h3 id="visit-map-title">Как добраться</h3>
+        <p>Москва, Ленинградский проспект, 24</p>
+        <iframe class="visit-widget" title="Яндекс Карты — расположение мастерской «Лайтовая»" src="https://yandex.ru/map-widget/v1/?oid=115511466378&amp;ol=biz&amp;z=16" loading="lazy" allowfullscreen></iframe>
+        <div class="visit-actions">
+          <a class="button" href="https://yandex.ru/maps/?mode=routes&amp;rtext=~55.782405%2C37.574309">Построить маршрут</a>
+        </div>
+      </section>
+      <section class="visit-card" id="reviews" aria-labelledby="guest-reviews-title">
+        <h3 id="guest-reviews-title">Отзывы гостей</h3>
+        <p>Отзывы о «Лайтовой» из карточки мастерской</p>
+        <iframe class="visit-widget" title="Отзывы о «Лайтовой» на Яндекс Картах" src="https://yandex.ru/maps-reviews-widget/115511466378?comments" loading="lazy"></iframe>
+        <div class="visit-actions">
+          <a class="text-link" href="https://yandex.ru/maps/org/laitovaya/115511466378/reviews/">Открыть отзывы на Яндекс Картах</a>
+        </div>
+      </section>
     </div>
-    <div class="review-controls" hidden>
-      <button type="button" data-review-step="-1" aria-controls="review-slides">Назад</button>
-      <span class="review-count" aria-label="Номер отзыва"></span>
-      <button type="button" data-review-step="1" aria-controls="review-slides">Дальше</button>
-    </div>
-    <a class="text-link" href="https://yandex.ru/maps/org/laitovaya/115511466378/reviews/">Все отзывы на Яндекс Картах</a>
   </section>
 </main>
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <strong class="footer-brand">Лайтовая</strong>
+      <p>Мастерская арт-светильников в Москве</p>
+    </div>
+    <nav aria-label="Посещение мастерской">
+      <strong>Посещение</strong>
+      <a href="#booking">Записаться</a>
+      <a href="#visit-address">Как добраться</a>
+      <a href="#reviews">Отзывы</a>
+    </nav>
+    <nav aria-label="Контакты мастерской">
+      <strong>На связи</strong>
+      <a href="https://t.me/+79996607737">Написать в Telegram</a>
+      <a href="https://t.me/+79996607737">Подарочный сертификат</a>
+      <a href="https://t.me/laitovayaru">Канал мастерской в Telegram</a>
+      <a href="https://www.instagram.com/laitovayaru/">Instagram мастерской</a>
+    </nav>
+  </div>
+</footer>
 <dialog id="media-dialog" aria-labelledby="media-title">
   <div class="media-window">
     <div id="media-preview"></div>
@@ -191,24 +210,5 @@
 <script id="media-data" type="application/json">[{"title": "Светильники в мастерской", "group": "Светильники", "image": "./media/reel-0.jpg", "original": "https://www.instagram.com/laitovayaru/reel/DfaG5Tasbiw/", "gif": "./media/reel-0.gif"}, {"title": "Обработка деревянной основы", "group": "Процесс", "image": "./media/reel-1.jpg", "original": "https://www.instagram.com/laitovayaru/reel/DfVPKy9MX_g/", "gif": "./media/reel-1.gif"}, {"title": "Примерка деталей", "group": "Процесс", "image": "./media/reel-2.jpg", "original": "https://www.instagram.com/laitovayaru/reel/DfuUfqksEsn/", "gif": "./media/reel-2.gif"}, {"title": "Сборка светильника", "group": "Процесс", "image": "./media/reel-3.jpg", "original": "https://www.instagram.com/laitovayaru/reel/Dd4Jf-8sqV0/", "gif": "./media/reel-3.gif"}, {"title": "Семейный мастер-класс", "group": "Мастерская", "image": "./media/reel-4.jpg", "original": "https://www.instagram.com/laitovayaru/reel/Df-L7H6sXTe/", "gif": "./media/reel-4.gif"}, {"title": "Работа с патроном", "group": "Процесс", "image": "./media/reel-5.jpg", "original": "https://www.instagram.com/laitovayaru/reel/DfxWbLDs4uB/", "gif": "./media/reel-5.gif"}, {"title": "Обработка ветки", "group": "Процесс", "image": "./media/reel-6.jpg", "original": "https://www.instagram.com/laitovayaru/reel/Dd4Jf-8sqV0/", "gif": "./media/reel-6.gif"}, {"title": "Подарочный сертификат", "group": "Мастерская", "image": "./media/reel-7.jpg", "original": "https://www.instagram.com/laitovayaru/reel/DfrxM87Mmii/", "gif": "./media/reel-7.gif"}, {"title": "Готовый светильник", "group": "Светильники", "image": "./media/photo-0.jpg?v=2"}, {"title": "Вход в мастерскую", "group": "Мастерская", "image": "./media/photo-1.webp"}, {"title": "Команда «Лайтовой»", "group": "Мастерская", "image": "./media/photo-2.webp"}, {"title": "Деревянная стойка", "group": "Процесс", "image": "./media/photo-3.jpg"}, {"title": "Подготовка дерева", "group": "Процесс", "image": "./media/photo-4.jpg"}, {"title": "Детали светильника", "group": "Процесс", "image": "./media/photo-5.jpg"}, {"title": "У верстака", "group": "Процесс", "image": "./media/photo-6.jpg"}, {"title": "Участники мастер-класса", "group": "Мастерская", "image": "./media/photo-7.jpg"}, {"title": "Лампочка крупным планом", "group": "Светильники", "image": "./media/photo-lamp-detail.jpg"}]</script>
 <script type="module" src="./folio.js?v=2"></script>
 <script type="module" src="./booking.js?v=3"></script>
-<script type="module">
-  const reviews = document.getElementById('reviews');
-  const slides = [...reviews.querySelectorAll('blockquote')];
-  const controls = reviews.querySelector('.review-controls');
-  const count = controls.querySelector('.review-count');
-  let active = 0;
-  function showReview() {
-    slides.forEach((slide, index) => { slide.hidden = index !== active; });
-    count.textContent = (active + 1) + ' из ' + slides.length;
-  }
-  controls.addEventListener('click', event => {
-    const button = event.target.closest('[data-review-step]');
-    if (!button) return;
-    active = (active + Number(button.dataset.reviewStep) + slides.length) % slides.length;
-    showReview();
-  });
-  showReview();
-  controls.hidden = false;
-</script>
 </body>
 </html>

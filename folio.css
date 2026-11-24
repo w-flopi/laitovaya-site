@@ -129,7 +129,10 @@ dialog::backdrop{background:#200709cd}
 .gallery-flight-card img{height:100%;object-fit:cover}
 .tile-image{opacity:var(--landing-opacity,1)}
 .step-image{overflow:hidden;aspect-ratio:1.25;border-radius:3px;margin-bottom:15px;background:var(--surface)}
-.step-image img{height:100%;object-fit:cover;object-position:50% 45%}
+.step-image img{height:100%;object-fit:cover;object-position:var(--step-focus);transform:scale(var(--step-zoom));transform-origin:var(--step-anchor,50% 50%)}
+.steps li:nth-child(1){--step-focus:56% 31%;--step-zoom:1.13;--step-anchor:61% 50%}
+.steps li:nth-child(2){--step-focus:50% 63%;--step-zoom:1.08;--step-anchor:44% 50%}
+.steps li:nth-child(3){--step-focus:64% 76%;--step-zoom:1.10;--step-anchor:65% 50%}
 .step-in-view .step-image{animation:step-window .66s cubic-bezier(.18,.7,.24,1) both}
 .step-in-view h3,.step-in-view p{animation:step-copy .55s .09s ease-out both}
 .steps li:nth-child(2){--step-delay:.08s}

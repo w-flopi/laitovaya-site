@@ -26,6 +26,25 @@
 .footer-grid a:hover{color:var(--ink)}
 .footer-brand{font-size:1.45rem}
 @media(max-width:760px){.visit-grid,.footer-grid{grid-template-columns:1fr}}
+.lamp-showcase{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,28px)}
+.lamp-showcase article{border:1px solid var(--line);background:var(--media);overflow:hidden;min-width:0}
+.lamp-photo{position:relative;overflow:hidden;aspect-ratio:5/8;background:var(--surface)}
+.lamp-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.lamp-photo--left img,.lamp-photo--right img{inset:0 auto auto 0;width:200%;height:auto;max-width:none}
+.lamp-photo--right img{left:-100%}
+.lamp-photo--pro img{object-position:57% center}
+.lamp-caption{padding:clamp(14px,2vw,25px)}
+.lamp-caption h3{font-size:clamp(1.55rem,3vw,2.8rem);line-height:1}
+.lamp-caption p{color:var(--mute);margin-top:10px;max-width:38ch}
+.lamp-caption strong{color:var(--ink)}
+.visit-extra{margin-top:clamp(25px,5vw,60px);padding:clamp(20px,4vw,44px);background:var(--surface)}
+.visit-extra .visit-grid article{border:0;padding-top:0}
+.visit-special{color:var(--mute);margin-top:22px;padding-top:16px;border-top:1px solid var(--line)}
+@media(max-width:660px){
+ .lamp-showcase{grid-template-columns:1fr}
+ .lamp-showcase article{display:grid;grid-template-columns:minmax(0,36%) minmax(0,1fr);align-items:center}
+ .lamp-caption{padding:12px}
+}
 </style>
 </head>
 <body>
@@ -84,23 +103,34 @@
   </section>
   <section class="workshop visit-info" aria-labelledby="visit-formats">
     <h2 id="visit-formats">Выберите свой арт-светильник</h2>
-    <div class="lamp-formats">
-      <article><h3>Лайт</h3><p>Компактный настольный светильник. Абажур можно выбрать из вариантов в мастерской.</p></article>
-      <article><h3>Эксперт</h3><p>Напольный светильник на деревянной стойке. Абажур можно выбрать на занятии.</p></article>
-      <article><h3>Профи</h3><p>Арт-светильник с лампой необычной формы. Может быть настольным или напольным.</p></article>
+    <div class="lamp-showcase">
+      <article>
+        <figure class="lamp-photo lamp-photo--right"><img src="./media/lamp-format-light.jpg" alt="Настольный светильник с деревянным основанием и подвесным абажуром" loading="lazy" decoding="async"></figure>
+        <div class="lamp-caption"><h3>Лайт</h3><p><strong>Настольный.</strong> Компактный светильник с абажуром на выбор.</p></div>
+      </article>
+      <article>
+        <figure class="lamp-photo lamp-photo--left"><img src="./media/lamp-format-expert.jpg" alt="Напольный светильник на высокой деревянной стойке" loading="lazy" decoding="async"></figure>
+        <div class="lamp-caption"><h3>Эксперт</h3><p><strong>Напольный.</strong> Светильник на деревянной стойке с абажуром на выбор.</p></div>
+      </article>
+      <article>
+        <figure class="lamp-photo lamp-photo--pro"><img src="./media/opening-10.jpg" alt="Арт-светильник с фигурной лампой и изогнутой деревянной стойкой" loading="lazy" decoding="async"></figure>
+        <div class="lamp-caption"><h3>Профи</h3><p><strong>С фигурной лампой.</strong> Можно сделать настольный или напольный светильник.</p></div>
+      </article>
     </div>
-    <p class="format-note">Можно прийти вдвоём на «Свидание» или уточнить у мастерской условия закрытого занятия для своей компании.</p>
-    <div class="visit-grid">
-      <article>
-        <h3>Семейный мастер-класс</h3>
-        <p>Сделайте арт-светильник вместе с ребёнком. Наставник покажет, как работать с деревом и инструментами. Рекомендуемый возраст — от 7 лет.</p>
-        <a class="button" href="#booking">Выбрать дату</a>
-      </article>
-      <article>
-        <h3>Подарочный сертификат</h3>
-        <p>Подарите мастер-класс по созданию арт-светильника. Сертификат можно оформить на любой мастер-класс.</p>
-        <a class="text-link" href="https://t.me/+79996607737">Оформить сертификат в Telegram</a>
-      </article>
+    <div class="visit-extra">
+      <div class="visit-grid">
+        <article>
+          <h3>Семейный мастер-класс</h3>
+          <p>Сделайте арт-светильник вместе с ребёнком. Наставник покажет, как работать с деревом и инструментами. Рекомендуемый возраст — от 7 лет.</p>
+          <a class="button" href="#booking">Выбрать дату</a>
+        </article>
+        <article>
+          <h3>Подарочный сертификат</h3>
+          <p>Сертификат можно оформить на любой мастер-класс по созданию арт-светильника.</p>
+          <a class="text-link" href="https://t.me/+79996607737">Оформить сертификат в Telegram</a>
+        </article>
+      </div>
+      <p class="visit-special">Для «Свидания» вдвоём или закрытого занятия своей компанией <a class="text-link" href="https://t.me/+79996607737">напишите мастерской</a>.</p>
     </div>
   </section>
   <section class="booking-area" aria-label="Запись и контакты">

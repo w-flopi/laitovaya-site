@@ -11,13 +11,19 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&amp;family=Russo+One&amp;display=swap">
 <link rel="stylesheet" href="./folio.css?v=3">
 <style>
-.visit-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(22px,4vw,56px)}
-.visit-grid article{border-top:1px solid var(--line);padding-top:16px}
-.visit-info h2,.visit-address h2{font-size:clamp(1.25rem,2.35vw,2rem);line-height:1.15}
-.visit-info p,.visit-info ul,.visit-address p{color:var(--mute);margin:12px 0 16px}
-.visit-info ul{padding-inline-start:1.15em}
-.visit-info li+li{margin-top:.35em}
+.visit-info > h2,.guest-reviews > h2{font-size:clamp(1.8rem,4vw,3.5rem);line-height:1.05;margin-bottom:clamp(24px,4vw,40px)}
+.visit-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:clamp(24px,5vw,72px)}
+.visit-grid article{border-top:1px solid var(--line);padding-top:18px}
+.visit-grid h3,.visit-address h2{font-size:clamp(1.2rem,2.35vw,1.8rem);line-height:1.15}
+.visit-grid p,.visit-address p{color:var(--mute);margin:12px 0 16px;max-width:48ch}
 .visit-address{border-top:1px solid var(--line);margin-top:clamp(36px,6vw,76px);padding-top:24px}
+.guest-reviews blockquote{margin:0;padding:clamp(20px,5vw,46px) 0;border-block:1px solid var(--line)}
+.guest-reviews blockquote p{font-size:clamp(1.25rem,3vw,2.35rem);line-height:1.25;max-width:42ch}
+.guest-reviews blockquote footer{color:var(--mute);margin-top:14px}
+.review-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-block:18px}
+.review-controls button{min-height:44px;padding:6px 13px;border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:4px}
+.review-controls button:hover{background:var(--surface)}
+.review-count{min-width:4em;text-align:center;color:var(--mute)}
 @media(max-width:760px){.visit-grid{grid-template-columns:1fr}}
 </style>
 </head>
@@ -76,24 +82,17 @@
     <a href="#booking" class="button">Выбрать дату мастер-класса</a>
   </section>
   <section class="workshop visit-info" aria-labelledby="visit-formats">
+    <h2 id="visit-formats">В мастерскую с семьёй или в подарок</h2>
     <div class="visit-grid">
       <article>
-        <h2 id="visit-formats">Семейный мастер-класс</h2>
+        <h3>Семейный мастер-класс</h3>
         <p>Сделайте арт-светильник вместе с ребёнком. Наставник покажет, как работать с деревом и инструментами. Рекомендуемый возраст — от 7 лет.</p>
-        <a class="text-link" href="#booking">Выбрать дату</a>
+        <a class="button" href="#booking">Выбрать дату</a>
       </article>
       <article>
-        <h2>Подарочные сертификаты</h2>
-        <p>Сертификат можно оформить на любой мастер-класс. Напишите в Telegram, чтобы выбрать формат.</p>
-        <a class="text-link" href="https://t.me/+79996607737">Спросить о сертификате</a>
-      </article>
-      <article>
-        <h2>Отзывы гостей</h2>
-        <ul>
-          <li>Новичкам помогают освоиться с инструментами и показывают сложные этапы.</li>
-          <li>Участники сами придумывают дизайн и забирают готовый светильник домой.</li>
-        </ul>
-        <a class="text-link" href="https://yandex.ru/maps/org/laitovaya/115511466378/reviews/">Читать отзывы на Яндекс Картах</a>
+        <h3>Подарочный сертификат</h3>
+        <p>Подарите мастер-класс по созданию арт-светильника. Сертификат можно оформить на любой мастер-класс.</p>
+        <a class="text-link" href="https://t.me/+79996607737">Оформить сертификат в Telegram</a>
       </article>
     </div>
   </section>
@@ -160,6 +159,20 @@
       <a href="https://www.instagram.com/laitovayaru/">Instagram мастерской</a>
     </nav>
   </section>
+  <section class="workshop guest-reviews" id="reviews" aria-labelledby="guest-reviews-title">
+    <h2 id="guest-reviews-title">Отзывы о мастерской</h2>
+    <div id="review-slides" aria-live="polite">
+      <blockquote><p>«Технику объяснили, сложные элементы наглядно показали».</p><footer>Виталий Демидов, Яндекс Карты</footer></blockquote>
+      <blockquote><p>«В мастерской все есть - материал , инструмент , расходники».</p><footer>Vladimir Sm, Яндекс Карты</footer></blockquote>
+      <blockquote><p>«Дома светильник вписался шикарно».</p><footer>Р, Яндекс Карты</footer></blockquote>
+    </div>
+    <div class="review-controls" hidden>
+      <button type="button" data-review-step="-1" aria-controls="review-slides">Назад</button>
+      <span class="review-count" aria-label="Номер отзыва"></span>
+      <button type="button" data-review-step="1" aria-controls="review-slides">Дальше</button>
+    </div>
+    <a class="text-link" href="https://yandex.ru/maps/org/laitovaya/115511466378/reviews/">Все отзывы на Яндекс Картах</a>
+  </section>
 </main>
 <dialog id="media-dialog" aria-labelledby="media-title">
   <div class="media-window">
@@ -178,5 +191,24 @@
 <script id="media-data" type="application/json">[{"title": "Светильники в мастерской", "group": "Светильники", "image": "./media/reel-0.jpg", "original": "https://www.instagram.com/laitovayaru/reel/DfaG5Tasbiw/", "gif": "./media/reel-0.gif"}, {"title": "Обработка деревянной основы", "group": "Процесс", "image": "./media/reel-1.jpg", "original": "https://www.instagram.com/laitovayaru/reel/DfVPKy9MX_g/", "gif": "./media/reel-1.gif"}, {"title": "Примерка деталей", "group": "Процесс", "image": "./media/reel-2.jpg", "original": "https://www.instagram.com/laitovayaru/reel/DfuUfqksEsn/", "gif": "./media/reel-2.gif"}, {"title": "Сборка светильника", "group": "Процесс", "image": "./media/reel-3.jpg", "original": "https://www.instagram.com/laitovayaru/reel/Dd4Jf-8sqV0/", "gif": "./media/reel-3.gif"}, {"title": "Семейный мастер-класс", "group": "Мастерская", "image": "./media/reel-4.jpg", "original": "https://www.instagram.com/laitovayaru/reel/Df-L7H6sXTe/", "gif": "./media/reel-4.gif"}, {"title": "Работа с патроном", "group": "Процесс", "image": "./media/reel-5.jpg", "original": "https://www.instagram.com/laitovayaru/reel/DfxWbLDs4uB/", "gif": "./media/reel-5.gif"}, {"title": "Обработка ветки", "group": "Процесс", "image": "./media/reel-6.jpg", "original": "https://www.instagram.com/laitovayaru/reel/Dd4Jf-8sqV0/", "gif": "./media/reel-6.gif"}, {"title": "Подарочный сертификат", "group": "Мастерская", "image": "./media/reel-7.jpg", "original": "https://www.instagram.com/laitovayaru/reel/DfrxM87Mmii/", "gif": "./media/reel-7.gif"}, {"title": "Готовый светильник", "group": "Светильники", "image": "./media/photo-0.jpg?v=2"}, {"title": "Вход в мастерскую", "group": "Мастерская", "image": "./media/photo-1.webp"}, {"title": "Команда «Лайтовой»", "group": "Мастерская", "image": "./media/photo-2.webp"}, {"title": "Деревянная стойка", "group": "Процесс", "image": "./media/photo-3.jpg"}, {"title": "Подготовка дерева", "group": "Процесс", "image": "./media/photo-4.jpg"}, {"title": "Детали светильника", "group": "Процесс", "image": "./media/photo-5.jpg"}, {"title": "У верстака", "group": "Процесс", "image": "./media/photo-6.jpg"}, {"title": "Участники мастер-класса", "group": "Мастерская", "image": "./media/photo-7.jpg"}, {"title": "Лампочка крупным планом", "group": "Светильники", "image": "./media/photo-lamp-detail.jpg"}]</script>
 <script type="module" src="./folio.js?v=2"></script>
 <script type="module" src="./booking.js?v=3"></script>
+<script type="module">
+  const reviews = document.getElementById('reviews');
+  const slides = [...reviews.querySelectorAll('blockquote')];
+  const controls = reviews.querySelector('.review-controls');
+  const count = controls.querySelector('.review-count');
+  let active = 0;
+  function showReview() {
+    slides.forEach((slide, index) => { slide.hidden = index !== active; });
+    count.textContent = (active + 1) + ' из ' + slides.length;
+  }
+  controls.addEventListener('click', event => {
+    const button = event.target.closest('[data-review-step]');
+    if (!button) return;
+    active = (active + Number(button.dataset.reviewStep) + slides.length) % slides.length;
+    showReview();
+  });
+  showReview();
+  controls.hidden = false;
+</script>
 </body>
 </html>

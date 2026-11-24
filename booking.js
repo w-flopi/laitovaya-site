@@ -172,16 +172,14 @@ form.addEventListener('submit',async event=>{
     const endHour = String(Number(fields.time.slice(0,2)) + 2).padStart(2,'0');
     const endTime = endHour + fields.time.slice(2);
     const lines=[
-      'Новая заявка · мастер-класс по светильникам',
+      'Здравствуйте! Меня зовут '+fields.name.trim()+'. Хочу записаться на мастер-класс по изготовлению арт-светильников.',
       '',
-      'Дата: '+formatDate(fields.date),
-      'Время: '+fields.time+'–'+endTime+' (МСК)',
-      'Гостей: '+fields.guests,
-      '',
-      'Имя: '+fields.name.trim(),
+      'Дата и время: '+formatDate(fields.date)+', '+fields.time+'–'+endTime+' (МСК)',
+      'Количество гостей: '+fields.guests,
       'Контакт для связи: '+fields.contact.trim()
     ];
-    if (fields.comment.trim()) lines.push('','Комментарий: '+fields.comment.trim());
+    if (fields.comment.trim()) lines.push('Комментарий: '+fields.comment.trim());
+    lines.push('', 'Подтвердите, пожалуйста, запись. Спасибо!');
     const chat = new URL(telegram.getAttribute('href').split('?')[0]);
     chat.searchParams.set('text',lines.join('\n'));
     telegram.href=chat.href;

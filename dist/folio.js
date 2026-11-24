@@ -40,7 +40,7 @@ const tiles = sorted.map(item => {
   const tile=element('button',item.gif ? 'media-tile gif-tile' : 'media-tile');
   const frame=element('span','tile-image');
   tile.type='button';
-  frame.append(mediaImage(item,{lazy:true}),element('span','tile-kind',item.gif ? 'GIF' : 'Фото'));
+  frame.append(mediaImage(item,{lazy:true}));
   tile.append(frame,element('span','tile-title',item.title),element('span','tile-group',item.group));
   tile.addEventListener('click',()=>openMedia(item,matches));
   mediaGrid.append(tile);
@@ -74,7 +74,7 @@ function showMedia() {
   const item = activeList[activeIndex];
   preview.replaceChildren(mediaImage(item,{label:item.title}));
   document.getElementById('media-title').textContent=item.title;
-  document.getElementById('media-topic').textContent=item.group+(item.gif?' · GIF':' · Фото');
+  document.getElementById('media-topic').textContent=item.group;
   const original=document.getElementById('media-original');
   original.hidden=!item.original;
   if(item.original) original.href=item.original;

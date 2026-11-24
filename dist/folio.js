@@ -17,7 +17,7 @@ const element = (tag, className, text) => {
   return node;
 };
 const normalize = value => value.toLocaleLowerCase('ru').replaceAll('ё','е').trim();
-let openAlbum = topics[0], matches = sorted, activeList, activeIndex, dialogOpener;
+let openAlbum = null, matches = sorted, activeList, activeIndex, dialogOpener;
 let phase = .022, spin = 0, onScreen = true, bounds, rail, bookW, bookH, grabbed;
 let cursor = {x:0,y:0};
 function mediaImage(item,{lazy=false,label='',draggable=false}={}) {
@@ -39,23 +39,30 @@ function mediaImage(item,{lazy=false,label='',draggable=false}={}) {
 const coverImages = ['./media/opening-03.jpg', './media/photo-0.jpg', './media/opening-09.jpg', './media/photo-7.jpg'];
 const albums = new Map(topics.map((topic, index) => {
   const cover = element('button', 'album-cover');
-  const photo = element('img');
+  const photo = element('img', 'album-front');
+  const back = element('img', 'album-back');
   const panel = element('section', 'media-album');
   const clip = element('div', 'album-clip');
   const grid = element('div', 'gallery-grid');
   photo.src = coverImages[index];
   photo.alt = '';
   photo.loading = 'lazy';
+  back.src = sorted.filter(item => item.group === topic)[1]?.image ?? photo.src;
+  back.alt = '';
+  back.loading = 'lazy';
   cover.type = 'button';
   cover.id = 'album-cover-' + index;
   panel.id = 'album-panel-' + index;
   cover.setAttribute('aria-controls', panel.id);
   panel.setAttribute('aria-labelledby', cover.id);
-  cover.append(photo, element('span', 'album-name', topic));
+  cover.append(back, photo, element('span', 'album-name', topic));
   cover.addEventListener('click', () => {
     openAlbum = openAlbum === topic ? null : topic;
     updateGallery();
+    if (openAlbum === topic) clip.scrollTop = 0;
   });
+  clip.tabIndex = 0;
+  clip.setAttribute('aria-label', topic + ' — материалы альбома');
   clip.append(grid);
   panel.append(clip);
   albumCovers.append(cover);

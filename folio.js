@@ -246,17 +246,26 @@ const stepObserver = new IntersectionObserver(entries => {
 }, {threshold:.25});
 steps.forEach(step=>stepObserver.observe(step));
 
-const revealItems=document.querySelectorAll(
-  '.section-heading, .gallery-controls, .booking-panel > h3, .booking-notice, .booking-schedule, .booking-details'
-);
-const revealObserver=new IntersectionObserver(entries=>{
-  for (const entry of entries) {
-    if (!entry.isIntersecting) continue;
-    entry.target.classList.add('scroll-in');
-    revealObserver.unobserve(entry.target);
+if (!reduce.matches) {
+  const revealItems = document.querySelectorAll(
+    '.section-heading > h2, .section-heading > p, .booking-panel > h3, .booking-notice > strong, .booking-notice > p'
+  );
+  const revealObserver = new IntersectionObserver(entries => {
+    let delay = 0;
+    for (const entry of entries.sort((first, second) => first.boundingClientRect.top - second.boundingClientRect.top)) {
+      if (!entry.isIntersecting) continue;
+      entry.target.style.setProperty('--reveal-delay', delay + 'ms');
+      entry.target.classList.replace('scroll-pending', 'scroll-in');
+      revealObserver.unobserve(entry.target);
+      delay = Math.min(delay + 85, 170);
+    }
+  });
+  for (const item of revealItems) {
+    if (item.getBoundingClientRect().top < innerHeight) continue;
+    item.classList.add('scroll-pending');
+    revealObserver.observe(item);
   }
-},{threshold:0,rootMargin:'0px 0px -8% 0px'});
-revealItems.forEach(item=>revealObserver.observe(item));
+}
 
 function createGalleryTransition() {
   const layer = element('div','gallery-flight');

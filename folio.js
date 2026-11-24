@@ -2,7 +2,6 @@ const items = JSON.parse(document.getElementById('media-data').textContent);
 const orbit = document.getElementById('orbit');
 const mediaGrid = document.getElementById('gallery-grid');
 const albumCovers = document.getElementById('album-covers');
-const search = document.getElementById('search');
 const dialog = document.getElementById('media-dialog');
 const preview = document.getElementById('media-preview');
 const reduce = matchMedia('(prefers-reduced-motion: reduce)');
@@ -16,8 +15,7 @@ const element = (tag, className, text) => {
   if (text) node.textContent = text;
   return node;
 };
-const normalize = value => value.toLocaleLowerCase('ru').replaceAll('ё','е').trim();
-let openAlbum = null, matches = sorted, activeList, activeIndex, dialogOpener;
+let openAlbum = null, activeList, activeIndex, dialogOpener;
 let phase = .022, spin = 0, onScreen = true, bounds, rail, bookW, bookH, grabbed;
 let cursor = {x:0,y:0};
 function mediaImage(item,{lazy=false,label='',draggable=false}={}) {
@@ -70,42 +68,25 @@ const albums = new Map(topics.map((topic, index) => {
   return [topic, {cover, panel, grid}];
 }));
 
-const tiles = sorted.map(item => {
+sorted.forEach(item => {
   const tile=element('button',item.gif ? 'media-tile gif-tile' : 'media-tile');
   const frame=element('span','tile-image');
   tile.type='button';
   frame.append(mediaImage(item,{lazy:true}));
   tile.append(frame,element('span','tile-title',item.title));
-  tile.addEventListener('click',()=>openMedia(item,matches.filter(match => match.group === item.group)));
+  tile.addEventListener('click',()=>openMedia(item,sorted.filter(match => match.group === item.group)));
   albums.get(item.group).grid.append(tile);
-  return tile;
 });
 
 function updateGallery() {
-  const q = normalize(search.value);
-  matches = sorted.filter((item, i) => {
-    const show = normalize(item.title + ' ' + item.group + (item.gif ? ' gif видео рилс' : ' фото')).includes(q);
-    tiles[i].hidden = !show;
-    return show;
-  });
-  const visibleGroups = new Set(matches.map(item => item.group));
-  if (q && !visibleGroups.has(openAlbum) && openAlbum !== null) openAlbum = visibleGroups.values().next().value ?? null;
   albums.forEach(({cover, panel}, topic) => {
-    const expanded = topic === openAlbum && visibleGroups.has(topic);
-    cover.hidden = !visibleGroups.has(topic);
+    const expanded = topic === openAlbum;
     cover.setAttribute('aria-expanded', String(expanded));
     panel.classList.toggle('is-open', expanded);
     panel.inert = !expanded;
   });
-  document.getElementById('gallery-count').textContent = q
-    ? (matches.length ? 'Найдено материалов: ' + matches.length : 'Ничего не найдено. Попробуйте другой запрос.')
-    : '';
 }
 
-search.addEventListener('input', () => {
-  if (!openAlbum) openAlbum = topics[0];
-  updateGallery();
-});
 updateGallery();
 
 function showMedia() {

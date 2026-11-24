@@ -266,13 +266,8 @@ orbit.addEventListener('wheel',event=>{
   }
 },{passive:true});
 new IntersectionObserver(([entry])=>{onScreen=entry.isIntersecting;}).observe(orbit);
-const transition = createGalleryTransition();
-new ResizeObserver(() => {resize();transition.reset();}).observe(orbit);
-window.addEventListener('scroll',()=>{
-  bounds=orbit.getBoundingClientRect();
-  transition.dirty=true;
-},{passive:true});
-reduce.addEventListener('change',()=>transition.reset());
+new ResizeObserver(resize).observe(orbit);
+window.addEventListener('scroll',()=>{bounds=orbit.getBoundingClientRect();},{passive:true});
 
 const steps = document.querySelectorAll('.steps li');
 const stepObserver = new IntersectionObserver(entries => {
@@ -305,93 +300,14 @@ if (!reduce.matches) {
   }
 }
 
-function createGalleryTransition() {
-  const layer = element('div','gallery-flight');
-  layer.setAttribute('aria-hidden','true');
-  document.body.append(layer);
-
-  // Pair each card with its own media tile, even when their orders differ.
-  const pairs = books.map(book => {
-    const target = tiles[sorted.indexOf(book.item)].querySelector('.tile-image');
-    const image = element('img');
-    image.src = book.item.image;
-    image.alt = '';
-    const card = element('div','gallery-flight-card');
-    card.hidden=true;
-    card.append(image);
-    layer.append(card);
-    return {book,target,card};
-  });
-  const state = {active:false,dirty:true,update,reset};
-  let displayed=0;
-  function reset() {
-    state.active=false;
-    state.dirty=true;
-    displayed=0;
-    orbit.classList.remove('is-morphing');
-    for (const pair of pairs) {
-      pair.target.style.removeProperty('--landing-opacity');
-      pair.card.hidden=true;
-    }
-  }
-  function update(dt) {
-    state.dirty=false;
-    const y=scrollY, viewport=innerHeight, box=orbit.getBoundingClientRect();
-    const heroTop=box.top+y;
-    const start=heroTop+box.height*.08;
-    const finish=Math.max(start+box.height*.52,
-      albums.get(topics[0]).panel.getBoundingClientRect().top+y-viewport*.36);
-    const wanted=Math.max(0,Math.min(1,(y-start)/(finish-start)));
-    if (openAlbum !== topics[0] || reduce.matches || dialog.open || y>finish+viewport*.72 || (!state.active && (wanted===0 || wanted===1))) {
-      if(state.active) {reset();state.dirty=false;}
-      return;
-    }
-    displayed+=(wanted-displayed)*(1-Math.exp(-dt*9));
-    if (Math.abs(wanted-displayed)<.006) displayed=wanted;
-    const progress=displayed;
-    if (progress===0 || progress===1) {
-      if (state.active) {reset();state.dirty=false;}
-      else if(wanted!==progress) state.dirty=true;
-      return;
-    }
-    if(!state.active){
-      state.active=true;
-      orbit.classList.add('is-morphing');
-    }
-    const eased=progress*progress*(3-2*progress);
-    const reveal=Math.max(0,(progress-.82)/.18);
-    const mix=(a,b)=>a+(b-a)*eased;
-    for(const {book,target,card} of pairs){
-      if(book.button.hidden || target.closest('[hidden], [inert]')){
-        card.hidden=true;
-        target.style.removeProperty('--landing-opacity');
-        continue;
-      }
-      const to=target.getBoundingClientRect();
-      const fromX=box.left+book.x-bookW/2;
-      const fromY=heroTop-start+book.y-bookH/2;
-      card.hidden=false;
-      card.style.width=bookW+'px';
-      card.style.height=bookH+'px';
-      card.style.opacity=String(1-reveal);
-      card.style.transform='translate3d('+mix(fromX,to.left)+'px,'+mix(fromY,to.top)+'px,0) '+
-        'rotateZ('+book.tilt*(1-eased)+'deg) rotateY('+((book.i%2?17:-17)*(1-eased))+'deg) '+
-        'scale('+mix(1,to.width/bookW)+','+mix(1,to.height/bookH)+')';
-      target.style.setProperty('--landing-opacity',String(reveal));
-    }
-  }
-  return state;
-}
-
 let last;
 function frame(time) {
   const dt=Math.min(.033,(time-(last??time))/1000);
   last=time;
-  if ((onScreen || transition.active) && !dialog.open) {
+  if (onScreen && !dialog.open) {
     if (!reduce.matches) {phase += dt*.026+spin;spin*=.91;}
     paint(time,false,dt);
   }
-  if (transition.dirty || transition.active) transition.update(dt);
   requestAnimationFrame(frame);
 }
 resize();

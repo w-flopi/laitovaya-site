@@ -23,13 +23,13 @@ export default {
     const path = pathname === '/' ? '/index.html' : pathname;
     if (!Object.hasOwn(assets,path)) return new Response('Страница не найдена', {status:404});
     const video = path.endsWith('.mp4');
-    const binary = /\.(mp4|jpg|webp)$/.test(path);
+    const binary = /\.(mp4|gif|jpg|webp)$/.test(path);
     const bytes = binary ? decodeMedia(assets[path])
       : new TextEncoder().encode(assets[path]);
     const headers = new Headers({'Content-Type':video ? 'video/mp4' :
       path.endsWith('.html') ? 'text/html; charset=utf-8' :
       path.endsWith('.css') ? 'text/css; charset=utf-8' :
-      path.endsWith('.jpg') ? 'image/jpeg' : path.endsWith('.webp') ? 'image/webp' : 'text/javascript; charset=utf-8'});
+      path.endsWith('.gif') ? 'image/gif' : path.endsWith('.jpg') ? 'image/jpeg' : path.endsWith('.webp') ? 'image/webp' : 'text/javascript; charset=utf-8'});
     headers.set('Cache-Control',binary ? 'private, max-age=3600' : 'no-cache');
     let start = 0, end = bytes.length - 1, status = 200;
     if (video) {

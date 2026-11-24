@@ -20,54 +20,39 @@ const normalize = value => value.toLocaleLowerCase('ru').replaceAll('ё','е').t
 let group = 'Все материалы', matches = sorted, galleryButtons, activeList, activeIndex, dialogOpener;
 let phase = .022, spin = 0, onScreen = true, bounds, rail, bookW, bookH, grabbed;
 let cursor = {x:0,y:0};
+function mediaImage(item,{lazy=false,label='',draggable=false}={}) {
+  const img=element('img');
+  img.src=item.image;
+  img.alt=label;
+  img.draggable=draggable;
+  if (lazy) img.loading='lazy';
+  if (!item.gif) return img;
+  const picture=element('picture');
+  const source=element('source');
+  source.media='(prefers-reduced-motion: no-preference)';
+  source.type='image/gif';
+  source.srcset=item.gif;
+  picture.append(source,img);
+  return picture;
+}
+
 const tiles = sorted.map(item => {
-  const tile = element(item.video ? 'article' : 'button','media-tile');
-  const frame = element('span','tile-image');
-  if (item.video) {
-    tile.classList.add('video-tile');
-    const video = makeVideo(item);
-    video.addEventListener('play', () => {
-      for (const other of mediaGrid.querySelectorAll('video')) {
-        if (other !== video && !other.paused) other.pause();
-      }
-    });
-    const fallback = element('a','video-fallback','Открыть ролик в Instagram');
-    fallback.href = item.original;
-    fallback.hidden = true;
-    video.addEventListener('error', () => { fallback.hidden = false; });
-    frame.append(video, fallback);
-  } else {
-    tile.type = 'button';
-    const img = element('img');
-    img.src = item.image;
-    img.loading = 'lazy';
-    img.alt = '';
-    frame.append(img,element('span','tile-kind','Фото'));
-    tile.addEventListener('click', () => openMedia(item,matches));
-  }
+  const tile=element('button',item.gif ? 'media-tile gif-tile' : 'media-tile');
+  const frame=element('span','tile-image');
+  tile.type='button';
+  frame.append(mediaImage(item,{lazy:true}),element('span','tile-kind',item.gif ? 'GIF' : 'Фото'));
   tile.append(frame,element('span','tile-title',item.title),element('span','tile-group',item.group));
+  tile.addEventListener('click',()=>openMedia(item,matches));
   mediaGrid.append(tile);
   return tile;
 });
-
-function makeVideo(item) {
-  const video = element('video');
-  video.controls = true;
-  video.playsInline = true;
-  video.preload = 'none';
-  video.poster = item.image;
-  video.src = item.video;
-  video.setAttribute('aria-label',item.title);
-  return video;
-}
 
 function updateGallery() {
   const q = normalize(search.value);
   matches = sorted.filter((item, i) => {
     const show = (group === 'Все материалы' || item.group === group) &&
-      normalize(item.title + ' ' + item.group + (item.video ? ' видео рилс' : ' фото')).includes(q);
+      normalize(item.title + ' ' + item.group + (item.gif ? ' gif видео рилс' : ' фото')).includes(q);
     tiles[i].hidden = !show;
-    if (!show) tiles[i].querySelector('video')?.pause();
     return show;
   });
   galleryButtons.forEach(button => button.setAttribute('aria-pressed', String(button.textContent === group)));
@@ -87,21 +72,15 @@ updateGallery();
 
 function showMedia() {
   const item = activeList[activeIndex];
-  const media = item.video ? makeVideo(item) : element('img');
-  if (item.video) {
-    media.muted = true;
-    media.autoplay = true;
-  } else {
-    media.src = item.image;
-    media.alt = item.title;
-  }
-  preview.replaceChildren(media);
-  document.getElementById('media-title').textContent = item.title;
-  document.getElementById('media-topic').textContent = item.group + (item.video ? ' · Видео' : ' · Фото');
+  preview.replaceChildren(mediaImage(item,{label:item.title}));
+  document.getElementById('media-title').textContent=item.title;
+  document.getElementById('media-topic').textContent=item.group+(item.gif?' · GIF':' · Фото');
+  const original=document.getElementById('media-original');
+  original.hidden=!item.original;
+  if(item.original) original.href=item.original;
 }
 function openMedia(item,list) {
   dialogOpener = document.activeElement;
-  for (const video of mediaGrid.querySelectorAll('video')) video.pause();
   activeList = list;
   activeIndex = list.indexOf(item);
   showMedia();
@@ -118,7 +97,6 @@ document.getElementById('media-next').addEventListener('click',()=>moveMedia(1))
 dialog.addEventListener('click',event => { if (event.target === dialog) dialog.close(); });
 dialog.addEventListener('close',()=>{ preview.replaceChildren(); dialogOpener?.focus({preventScroll:true}); });
 dialog.addEventListener('keydown',event => {
-  if (event.target.tagName === 'VIDEO') return;
   if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
     event.preventDefault();
     moveMedia(event.key === 'ArrowLeft' ? -1 : 1);
@@ -129,11 +107,8 @@ const books = orbitItems.map((item,i) => {
   const button = element('button','orbit-card');
   button.type = 'button';
   button.setAttribute('aria-label',item.title);
-  const face = element('span','card-face'), image = element('img');
-  image.src = item.image;
-  image.alt = '';
-  image.draggable = false;
-  face.append(image);
+  const face=element('span','card-face');
+  face.append(mediaImage(item));
   button.append(face,element('span','card-back'),element('span','card-spine'),element('span','card-edge'));
   orbit.append(button);
   const book = {button, item, i, x:0,y:0,vx:0,vy:0,hover:false,tilt:[-12,8,-9,12,-7,10,-16,7,-8,14,-9,7][i]};
@@ -157,12 +132,12 @@ const books = orbitItems.map((item,i) => {
 function resize() {
   bounds = orbit.getBoundingClientRect();
   const {width:w,height:h} = bounds;
-  bookW = narrow.matches ? Math.min(112,w*.235) : Math.min(153, Math.max(99,w*.104));
+  bookW = narrow.matches ? Math.min(139,w*.306) : Math.min(153, Math.max(99,w*.104));
   bookH = bookW * 1.23;
   orbit.style.setProperty('--card-w',bookW+'px');
   orbit.style.setProperty('--card-h',bookH+'px');
   orbit.style.setProperty('--depth',bookW*.034+'px');
-  const samples = [], rx = w * (narrow.matches ? .435 : .418), ry = h * .333;
+  const samples = [], rx = w * (narrow.matches ? .414 : .418), ry = h * .333;
   let distance = 0;
   for (let i = 0; i <= 360; i++) {
     const a = i*Math.PI/180, cx = Math.cos(a), sy = Math.sin(a);

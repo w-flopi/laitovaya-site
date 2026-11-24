@@ -7,9 +7,9 @@ const dialog = document.getElementById('media-dialog');
 const preview = document.getElementById('media-preview');
 const reduce = matchMedia('(prefers-reduced-motion: reduce)');
 const narrow = matchMedia('(max-width: 760px)');
-const topics = ['Светильники', 'Процесс', 'Мастерская'];
+const topics = ['Открытие мастерской', 'Светильники', 'Процесс', 'Мастерская'];
 const sorted = topics.flatMap(topic => items.filter(item => item.group === topic));
-const orbitItems = [items[8],items[1],items[9],items[2],items[5],items[13],items[0],items[4],items[12],items[6],items[10],items[7]];
+const orbitItems = items.filter(item => item.group === 'Открытие мастерской');
 const element = (tag, className, text) => {
   const node = document.createElement(tag);
   if (className) node.className = className;

@@ -215,7 +215,9 @@ dialog::backdrop{background:#200709cd}
 .booking-links{display:flex;gap:12px;flex-wrap:wrap}
 .booking-links a{text-decoration:underline;text-underline-offset:3px}
 
-.scroll-in{animation:section-arrival .65s cubic-bezier(.2,.68,.24,1) both}
-.gallery-controls.scroll-in,.booking-details.scroll-in{animation-delay:.08s}
-@keyframes section-arrival{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-@media(prefers-reduced-motion:reduce){.scroll-in{animation:none}}
+.copy-accent{color:var(--ink);font-weight:650;text-shadow:0 0 .65em #eab88c38}
+@media(prefers-reduced-motion:no-preference){
+ .scroll-pending{opacity:0}
+ .scroll-in{animation:text-arrival .58s cubic-bezier(.22,.61,.36,1) var(--reveal-delay,0ms) both}
+ @keyframes text-arrival{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+}

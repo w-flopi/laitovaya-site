@@ -26,26 +26,23 @@
 .footer-grid a:hover{color:var(--ink)}
 .footer-brand{font-size:1.45rem}
 @media(max-width:760px){.visit-grid,.footer-grid{grid-template-columns:1fr}}
-.lamp-showcase{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,24px);max-width:740px}
-.lamp-showcase article{border:1px solid var(--line);background:var(--media);overflow:hidden;min-width:0}
-.lamp-photo{position:relative;overflow:hidden;height:clamp(128px,19vw,165px);background:var(--surface)}
+.lamp-showcase{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+.lamp-showcase article{min-width:0}
+.lamp-photo{position:relative;overflow:hidden;height:clamp(128px,19vw,165px);border-radius:3px;background:var(--surface);margin-bottom:15px}
 .lamp-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .lamp-photo--left img{inset:0 auto auto 50%;width:auto;height:205%;max-width:none;transform:translateX(-25%);clip-path:inset(0 50% 51% 0)}
 .lamp-photo--light img{object-position:50% 64%}
 .lamp-word{text-shadow:0 0 .48em #f4ab6678,0 0 .95em #f4ab664c}
 .lamp-photo--pro img{object-position:50% 40%}
-.lamp-caption{padding:clamp(12px,1.5vw,19px)}
-.lamp-caption h3{font-size:clamp(1.55rem,3vw,2.8rem);line-height:1}
-.lamp-caption p{color:var(--mute);margin-top:10px;max-width:38ch}
+.lamp-caption h3{font-size:1.14rem;line-height:1.3;margin-bottom:9px}
+.lamp-caption p{color:var(--mute);font-size:.96rem;max-width:36ch}
 .lamp-caption strong{color:var(--ink)}
-.visit-extra{margin-top:clamp(25px,5vw,60px);padding:clamp(20px,4vw,44px);background:var(--surface)}
+.visit-extra{margin-top:clamp(25px,5vw,60px);padding-top:24px;border-top:1px solid var(--line)}
 .visit-extra .visit-grid article{border:0;padding-top:0}
 .visit-special{color:var(--mute);margin-top:22px;padding-top:16px;border-top:1px solid var(--line)}
 @media(max-width:660px){
- .lamp-showcase{grid-template-columns:1fr}
- .lamp-showcase article{display:grid;grid-template-columns:minmax(0,36%) minmax(0,1fr);align-items:center}
- .lamp-photo{height:clamp(104px,31vw,130px)}
- .lamp-caption{padding:12px}
+ .lamp-showcase{grid-template-columns:1fr;gap:18px}
+ .lamp-photo{height:clamp(120px,37vw,165px)}
 }
 </style>
 </head>

@@ -36,14 +36,25 @@ function mediaImage(item,{lazy=false,label='',draggable=false}={}) {
   return picture;
 }
 
+const albums = new Map(topics.map((topic, index) => {
+  const section = element('section','media-album');
+  const title = element('h3','album-title',topic);
+  const grid = element('div','gallery-grid');
+  title.id = 'album-' + index;
+  section.setAttribute('aria-labelledby', title.id);
+  section.append(title, grid);
+  mediaGrid.append(section);
+  return [topic, {section, grid}];
+}));
+
 const tiles = sorted.map(item => {
   const tile=element('button',item.gif ? 'media-tile gif-tile' : 'media-tile');
   const frame=element('span','tile-image');
   tile.type='button';
   frame.append(mediaImage(item,{lazy:true}));
-  tile.append(frame,element('span','tile-title',item.title),element('span','tile-group',item.group));
-  tile.addEventListener('click',()=>openMedia(item,matches));
-  mediaGrid.append(tile);
+  tile.append(frame,element('span','tile-title',item.title));
+  tile.addEventListener('click',()=>openMedia(item,matches.filter(match => match.group === item.group)));
+  albums.get(item.group).grid.append(tile);
   return tile;
 });
 
@@ -55,6 +66,8 @@ function updateGallery() {
     tiles[i].hidden = !show;
     return show;
   });
+  const visibleGroups = new Set(matches.map(item => item.group));
+  albums.forEach(({section}, topic) => { section.hidden = !visibleGroups.has(topic); });
   galleryButtons.forEach(button => button.setAttribute('aria-pressed', String(button.textContent === group)));
   document.getElementById('gallery-count').textContent = matches.length
     ? 'Материалов: ' + matches.length : 'Ничего не найдено. Попробуйте другой запрос.';

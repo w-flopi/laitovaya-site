@@ -60,6 +60,9 @@ h1,h2,h3,p,figure{margin:0}
 .search input::placeholder{color:var(--mute);opacity:.8}
 .search input{min-height:42px;border-radius:100px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:0 13px;width:100%}
 #gallery-count{color:var(--mute);font-size:.86rem;min-height:1.5em;margin-bottom:14px}
+.gallery-albums{display:grid;gap:clamp(32px,6vw,72px)}
+.media-album{min-width:0;border-top:1px solid var(--line);padding-top:clamp(14px,2vw,24px)}
+.album-title{font-size:clamp(1.35rem,3vw,2.6rem);line-height:1.12;margin-bottom:clamp(14px,2.5vw,28px)}
 .gallery-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px 18px}
 .media-tile{padding:0;background:none;border:0;text-align:left;color:var(--ink);min-width:0}
 .tile-image{position:relative;display:block;overflow:hidden;border-radius:4px;background:var(--surface);aspect-ratio:1.05}

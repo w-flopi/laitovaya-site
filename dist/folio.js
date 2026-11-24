@@ -34,7 +34,7 @@ function mediaImage(item,{lazy=false,label='',draggable=false}={}) {
   return picture;
 }
 
-const coverImages = ['./media/opening-03.jpg', './media/photo-0.jpg', './media/opening-09.jpg', './media/photo-7.jpg'];
+const coverImages = ['./media/opening-03.jpg', './media/photo-0.jpg', './media/opening-09.jpg', './media/about-team.jpg'];
 const albums = new Map(topics.map((topic, index) => {
   const cover = element('button', 'album-cover');
   const photo = element('img', 'album-front');

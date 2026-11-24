@@ -44,6 +44,32 @@ h2:not(.section-lettering),h3:not(.section-lettering){text-shadow:var(--heading-
 @media(max-width:660px){
  .lamp-showcase{grid-template-columns:1fr;gap:18px}
 }
+.about-section{position:relative;isolation:isolate}
+.about-section::before{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:repeating-radial-gradient(ellipse at 102% 86%,transparent 0 14px,#edc39412 15px 16px,transparent 17px 27px);
+  mask-image:radial-gradient(ellipse at 100% 76%,#000 5%,transparent 67%)}
+.about-section::after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse at 92% 60%,#cc875722,transparent 57%)}
+.about-layout{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1fr) minmax(0,1.2fr);gap:clamp(18px,3vw,46px);align-items:start;max-width:1280px;margin-inline:auto}
+.about-photo{overflow:hidden;border-radius:3px}
+.about-photo img{width:100%;height:auto;aspect-ratio:1;object-fit:cover}
+.about-layout h2{font-size:clamp(1.65rem,3.1vw,3rem);line-height:1.05;margin-bottom:16px}
+.about-copy p{color:var(--mute);max-width:45ch;margin-bottom:12px}
+.about-copy strong{color:var(--ink)}
+.about-copy .text-link{font-size:.88rem}
+.about-media .album-covers{grid-template-columns:repeat(2,minmax(0,1fr));margin:0;gap:16px;padding-inline:0 7px}
+.about-media .album-name{font-size:clamp(.85rem,1.25vw,1.15rem)}
+.about-section .gallery-albums{max-width:1280px}
+@media(max-width:1000px){
+ .about-layout{grid-template-columns:minmax(0,.8fr) minmax(0,1fr)}
+ .about-media{grid-column:1/-1}
+ .about-media .album-covers{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media(max-width:640px){
+ .about-layout{grid-template-columns:1fr}
+ .about-photo{max-width:360px}
+ .about-media .album-covers{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 </style>
 </head>
 <body>
@@ -79,12 +105,22 @@ h2:not(.section-lettering),h3:not(.section-lettering){text-shadow:var(--heading-
       <a class="button" href="#workshop">Как проходит мастер-класс</a>
     </div>
   </section>
-  <section id="gallery" class="gallery" aria-labelledby="gallery-title">
-    <div class="section-heading">
-      <h2 id="gallery-title" class="section-lettering" aria-label="Медиатека"><svg viewBox="0 0 514 60" style="width:8.567em" aria-hidden="true" focusable="false"><path transform="translate(0)" d="M0 0H13L31 27L49 0H62V60H49V22L31 47L13 22V60H0Z"/><path transform="translate(67)" d="M0 0H44L39 12H13V24H37V36H13V48H44V60H0Z"/><path transform="translate(116)" d="M7 43H12L20 0H53V43H63V60H51V55H12V60H0V43ZM25 43H40V12H30Z"/><path transform="translate(184)" d="M0 0H13V34L39 0H52V60H39V25L13 60H0Z"/><path transform="translate(241)" d="M24 0H31L55 60H41L37 49H18L14 60H0ZM22 38H33L27.5 23Z"/><path transform="translate(301)" d="M0 0H48L43 12H30V60H17V12H0Z"/><path transform="translate(354)" d="M0 0H44L39 12H13V24H37V36H13V48H44V60H0Z"/><path transform="translate(403)" d="M0 0H13V24H17L35 0H51L29 29L51 60H35L17 36H13V60H0Z"/><path transform="translate(459)" d="M24 0H31L55 60H41L37 49H18L14 60H0ZM22 38H33L27.5 23Z"/></svg></h2>
-      <p>Загляните в «Лайтовую» и посмотрите, как и где рождаются наши арт-светильники — от первых заготовок до готовых работ.</p>
+  <section id="about" class="gallery about-section" aria-labelledby="about-title">
+    <div class="about-layout">
+      <figure class="about-photo">
+        <img src="./media/about-team.jpg" alt="Денис и Артур, основатели мастерской «Лайтовая»" width="640" height="640" loading="lazy" decoding="async">
+      </figure>
+      <div class="about-copy">
+        <h2 id="about-title">О нас</h2>
+        <p><strong>Мы Денис и Артур, друзья и основатели «Лайтовой».</strong> Хотели создать место, где можно выдохнуть, взять в руки инструмент и сделать вещь, которой будешь гордиться.</p>
+        <p>У каждой заготовки свой характер. Поможем увидеть его в изгибах и фактуре дерева и сделать из него светильник по вашей задумке. Будем рядом от выбора материала до первого включения света.</p>
+        <a class="text-link" href="https://www.instagram.com/p/DdgRv-1MAXi/">История мастерской в Instagram</a>
+      </div>
+      <div class="about-media" id="gallery">
+        <h2 id="gallery-title">Медиатека</h2>
+        <div id="album-covers" class="album-covers" aria-labelledby="gallery-title" role="group"></div>
+      </div>
     </div>
-    <div id="album-covers" class="album-covers" aria-label="Альбомы медиатеки" role="group"></div>
     <div id="gallery-grid" class="gallery-albums"></div>
   </section>
   <section class="workshop" id="workshop" aria-labelledby="workshop-title">
@@ -244,8 +280,8 @@ h2:not(.section-lettering),h3:not(.section-lettering){text-shadow:var(--heading-
     </div>
   </div>
 </dialog>
-<script id="media-data" type="application/json">[{"title": "Светильники в мастерской", "group": "Светильники", "image": "./media/reel-0.jpg", "original": "https://www.instagram.com/laitovayaru/reel/DfaG5Tasbiw/", "gif": "./media/reel-0.gif?v=2"}, {"title": "Обработка деревянной основы", "group": "Процесс", "image": "./media/reel-1.jpg", "original": "https://www.instagram.com/laitovayaru/reel/DfVPKy9MX_g/", "gif": "./media/reel-1.gif?v=2"}, {"title": "Примерка деталей", "group": "Процесс", "image": "./media/reel-2.jpg", "original": "https://www.instagram.com/laitovayaru/reel/DfuUfqksEsn/", "gif": "./media/reel-2.gif?v=2"}, {"title": "Сборка светильника", "group": "Процесс", "image": "./media/reel-3.jpg", "original": "https://www.instagram.com/laitovayaru/reel/Dd4Jf-8sqV0/", "gif": "./media/reel-3.gif?v=2"}, {"title": "Семейный мастер-класс", "group": "Мастерская", "image": "./media/reel-4.jpg", "original": "https://www.instagram.com/laitovayaru/reel/Df-L7H6sXTe/", "gif": "./media/reel-4.gif?v=2"}, {"title": "Работа с патроном", "group": "Процесс", "image": "./media/reel-5.jpg", "original": "https://www.instagram.com/laitovayaru/reel/DfxWbLDs4uB/", "gif": "./media/reel-5.gif?v=2"}, {"title": "Обработка ветки", "group": "Процесс", "image": "./media/reel-6.jpg", "original": "https://www.instagram.com/laitovayaru/reel/Dd4Jf-8sqV0/", "gif": "./media/reel-6.gif?v=2"}, {"title": "Подарочный сертификат", "group": "Мастерская", "image": "./media/reel-7.jpg", "original": "https://www.instagram.com/laitovayaru/reel/DfrxM87Mmii/", "gif": "./media/reel-7.gif?v=2"}, {"title": "Готовый светильник", "group": "Светильники", "image": "./media/photo-0.jpg?v=2"}, {"title": "Вход в мастерскую", "group": "Мастерская", "image": "./media/photo-1.webp"}, {"title": "Команда «Лайтовой»", "group": "Мастерская", "image": "./media/photo-2.webp"}, {"title": "Деревянная стойка", "group": "Процесс", "image": "./media/photo-3.jpg"}, {"title": "Подготовка дерева", "group": "Процесс", "image": "./media/photo-4.jpg"}, {"title": "Детали светильника", "group": "Процесс", "image": "./media/photo-5.jpg"}, {"title": "У верстака", "group": "Процесс", "image": "./media/photo-6.jpg"}, {"title": "Участники мастер-класса", "group": "Мастерская", "image": "./media/photo-7.jpg"}, {"title": "Лампочка крупным планом", "group": "Светильники", "image": "./media/photo-lamp-detail.jpg"}, {"title": "Вход в «Лайтовую»", "group": "Атмосфера мастерской", "image": "./media/opening-01.jpg", "original": "https://www.instagram.com/p/DddmYSNjPt2/"}, {"title": "Деревянная вывеска", "group": "Атмосфера мастерской", "image": "./media/opening-02.jpg", "original": "https://www.instagram.com/p/DddmYSNjPt2/"}, {"title": "Интерьер мастерской", "group": "Атмосфера мастерской", "image": "./media/opening-03.jpg", "original": "https://www.instagram.com/p/DddmYSNjPt2/"}, {"title": "Светильник у стены", "group": "Атмосфера мастерской", "image": "./media/opening-04.jpg", "original": "https://www.instagram.com/p/DddmYSNjPt2/"}, {"title": "Зона отдыха", "group": "Атмосфера мастерской", "image": "./media/opening-05.jpg", "original": "https://www.instagram.com/p/DddmYSNjPt2/"}, {"title": "Мастер сверлит заготовку", "group": "Атмосфера мастерской", "image": "./media/opening-06.jpg", "original": "https://www.instagram.com/p/DddmYSNjPt2/"}, {"title": "Рабочая зона мастерской", "group": "Атмосфера мастерской", "image": "./media/opening-07.jpg", "original": "https://www.instagram.com/p/DddmYSNjPt2/"}, {"title": "Инструменты над верстаком", "group": "Атмосфера мастерской", "image": "./media/opening-08.jpg", "original": "https://www.instagram.com/p/DddmYSNjPt2/"}, {"title": "Работа с деревом крупным планом", "group": "Атмосфера мастерской", "image": "./media/opening-09.jpg", "original": "https://www.instagram.com/p/DddmYSNjPt2/"}, {"title": "Светильники на столе", "group": "Атмосфера мастерской", "image": "./media/opening-10.jpg", "original": "https://www.instagram.com/p/DddmYSNjPt2/"}]</script>
-<script type="module" src="./folio.js?v=8"></script>
+<script id="media-data" type="application/json">[{"title":"Светильники в мастерской","group":"Светильники","image":"./media/reel-0.jpg","original":"https://www.instagram.com/laitovayaru/reel/DfaG5Tasbiw/","gif":"./media/reel-0.gif?v=2"},{"title":"Обработка деревянной основы","group":"Процесс","image":"./media/reel-1.jpg","original":"https://www.instagram.com/laitovayaru/reel/DfVPKy9MX_g/","gif":"./media/reel-1.gif?v=2"},{"title":"Примерка деталей","group":"Процесс","image":"./media/reel-2.jpg","original":"https://www.instagram.com/laitovayaru/reel/DfuUfqksEsn/","gif":"./media/reel-2.gif?v=2"},{"title":"Сборка светильника","group":"Процесс","image":"./media/reel-3.jpg","original":"https://www.instagram.com/laitovayaru/reel/Dd4Jf-8sqV0/","gif":"./media/reel-3.gif?v=2"},{"title":"Семейный мастер-класс","group":"Мастерская","image":"./media/reel-4.jpg","original":"https://www.instagram.com/laitovayaru/reel/Df-L7H6sXTe/","gif":"./media/reel-4.gif?v=2"},{"title":"Работа с патроном","group":"Процесс","image":"./media/reel-5.jpg","original":"https://www.instagram.com/laitovayaru/reel/DfxWbLDs4uB/","gif":"./media/reel-5.gif?v=2"},{"title":"Готовый светильник","group":"Светильники","image":"./media/photo-0.jpg?v=2"},{"title":"Денис и Артур","group":"Мастерская","image":"./media/about-team.jpg","original":"https://www.instagram.com/p/DdgRv-1MAXi/"},{"title":"Деревянная стойка","group":"Процесс","image":"./media/photo-3.jpg"},{"title":"Подготовка дерева","group":"Процесс","image":"./media/photo-4.jpg"},{"title":"Детали светильника","group":"Процесс","image":"./media/photo-5.jpg"},{"title":"У верстака","group":"Процесс","image":"./media/photo-6.jpg"},{"title":"Лампочка крупным планом","group":"Светильники","image":"./media/photo-lamp-detail.jpg"},{"title":"Вход в «Лайтовую»","group":"Атмосфера мастерской","image":"./media/opening-01.jpg","original":"https://www.instagram.com/p/DddmYSNjPt2/"},{"title":"Деревянная вывеска","group":"Атмосфера мастерской","image":"./media/opening-02.jpg","original":"https://www.instagram.com/p/DddmYSNjPt2/"},{"title":"Интерьер мастерской","group":"Атмосфера мастерской","image":"./media/opening-03.jpg","original":"https://www.instagram.com/p/DddmYSNjPt2/"},{"title":"Светильник у стены","group":"Атмосфера мастерской","image":"./media/opening-04.jpg","original":"https://www.instagram.com/p/DddmYSNjPt2/"},{"title":"Зона отдыха","group":"Атмосфера мастерской","image":"./media/opening-05.jpg","original":"https://www.instagram.com/p/DddmYSNjPt2/"},{"title":"Мастер сверлит заготовку","group":"Атмосфера мастерской","image":"./media/opening-06.jpg","original":"https://www.instagram.com/p/DddmYSNjPt2/"},{"title":"Рабочая зона мастерской","group":"Атмосфера мастерской","image":"./media/opening-07.jpg","original":"https://www.instagram.com/p/DddmYSNjPt2/"},{"title":"Инструменты над верстаком","group":"Атмосфера мастерской","image":"./media/opening-08.jpg","original":"https://www.instagram.com/p/DddmYSNjPt2/"},{"title":"Работа с деревом крупным планом","group":"Атмосфера мастерской","image":"./media/opening-09.jpg","original":"https://www.instagram.com/p/DddmYSNjPt2/"},{"title":"Светильники на столе","group":"Атмосфера мастерской","image":"./media/opening-10.jpg","original":"https://www.instagram.com/p/DddmYSNjPt2/"}]</script>
+<script type="module" src="./folio.js?v=9"></script>
 <script type="module" src="./booking.js?v=3"></script>
 </body>
 </html>

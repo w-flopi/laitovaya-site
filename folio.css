@@ -21,15 +21,8 @@ h1,h2,h3,p,figure{margin:0}
 .hero{position:relative;height:clamp(590px,calc(100svh - 73px),900px);display:grid;place-items:center;overflow:hidden;background:var(--paper)}
 .hero-copy{position:relative;z-index:6;text-align:center;pointer-events:none;margin-top:-12px}
 .hero-copy a{pointer-events:auto}
-.hero-copy::before{
-  content:'';position:absolute;z-index:-1;inset:-60px -80px;pointer-events:none;
-  background:
-    radial-gradient(ellipse at 48% 48%,#360c0df5 0%,#360c0ded 37%,#360c0d00 69%),
-    radial-gradient(ellipse at 34% 57%,#9b4a2863 0%,#913d202e 40%,#360c0d00 68%),
-    radial-gradient(ellipse at 73% 32%,#be743245 0%,#a550211f 28%,#360c0d00 61%);
-  filter:blur(15px)
-}
-.hero-copy .studio-lettering{filter:drop-shadow(0 3px 10px #210708d9)}
+.hero:has(.orbit.is-morphing) .hero-copy::before{content:'';position:absolute;z-index:-1;inset:-28px -44px;
+  background:radial-gradient(ellipse,#360c0df7 0%,#360c0dd9 46%,#360c0d00 74%);pointer-events:none}
 .gallery .section-heading,.gallery-controls,#gallery-count{position:relative;z-index:6}
 .hero-location{font-size:.83rem;color:var(--mute);margin-bottom:17px}
 .hero h1{font:400 clamp(2.9rem,6.1vw,7.8rem)/.96 "Russo One",Onest,sans-serif;letter-spacing:-.025em;text-transform:uppercase}

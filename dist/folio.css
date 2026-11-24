@@ -23,8 +23,6 @@ h1,h2,h3,p,figure{margin:0}
 .hero{position:relative;height:clamp(590px,calc(100svh - var(--header-height)),900px);display:grid;place-items:center;overflow:hidden;background:var(--paper)}
 .hero-copy{position:relative;z-index:6;text-align:center;pointer-events:none;margin-top:-12px}
 .hero-copy a{pointer-events:auto}
-.hero:has(.orbit.is-morphing) .hero-copy::before{content:'';position:absolute;z-index:-1;inset:-28px -44px;
-  background:radial-gradient(ellipse,#360c0df7 0%,#360c0dd9 46%,#360c0d00 74%);pointer-events:none}
 .gallery .section-heading,.gallery-controls,#gallery-count{position:relative;z-index:6}
 .hero-location{font-size:.83rem;color:var(--mute);margin-bottom:17px}
 .hero h1{font:400 clamp(2.9rem,6.1vw,7.8rem)/.96 "Russo One",Onest,sans-serif;letter-spacing:-.025em;text-transform:uppercase}
@@ -145,14 +143,6 @@ dialog::backdrop{background:#200709cd}
 .gif-tile .tile-image img{object-fit:contain}
 #media-original{font-size:.85rem;margin:-12px 0 15px;align-self:flex-start}
 
-/* The orbit covers travel to their matching tiles on the real gallery. */
-.orbit.is-morphing .orbit-card{visibility:hidden}
-.gallery-flight{position:fixed;inset:0;z-index:5;perspective:1400px;pointer-events:none;overflow:hidden}
-.gallery-flight-card{position:absolute;left:0;top:0;transform-origin:top left;overflow:hidden;border-radius:4px;
-  background:var(--surface);box-shadow:0 12px 26px #17040575;will-change:transform}
-.gallery-flight-card img{height:100%;object-fit:cover}
-.tile-image{opacity:var(--landing-opacity,1)}
-.step-image{overflow:hidden;aspect-ratio:1.25;border-radius:3px;margin-bottom:15px;background:var(--surface)}
 .step-image img{height:100%;object-fit:cover;object-position:var(--step-focus);transform:scale(var(--step-zoom));transform-origin:var(--step-anchor,50% 50%)}
 .steps li:nth-child(1){--step-focus:56% 31%;--step-zoom:1.13;--step-anchor:61% 50%}
 .steps li:nth-child(2){--step-focus:50% 63%;--step-zoom:1.08;--step-anchor:44% 50%}

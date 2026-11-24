@@ -1,15 +1,15 @@
 const items = JSON.parse(document.getElementById('media-data').textContent);
 const orbit = document.getElementById('orbit');
 const mediaGrid = document.getElementById('gallery-grid');
-const filters = document.getElementById('filters');
+const albumCovers = document.getElementById('album-covers');
 const search = document.getElementById('search');
 const dialog = document.getElementById('media-dialog');
 const preview = document.getElementById('media-preview');
 const reduce = matchMedia('(prefers-reduced-motion: reduce)');
 const narrow = matchMedia('(max-width: 760px)');
-const topics = ['Открытие мастерской', 'Светильники', 'Процесс', 'Мастерская'];
+const topics = ['Атмосфера мастерской', 'Светильники', 'Процесс', 'Мастерская'];
 const sorted = topics.flatMap(topic => items.filter(item => item.group === topic));
-const orbitItems = items.filter(item => item.group === 'Открытие мастерской');
+const orbitItems = items.filter(item => item.group === 'Атмосфера мастерской');
 const element = (tag, className, text) => {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -17,7 +17,7 @@ const element = (tag, className, text) => {
   return node;
 };
 const normalize = value => value.toLocaleLowerCase('ru').replaceAll('ё','е').trim();
-let group = 'Все материалы', matches = sorted, galleryButtons, activeList, activeIndex, dialogOpener;
+let openAlbum = topics[0], matches = sorted, activeList, activeIndex, dialogOpener;
 let phase = .022, spin = 0, onScreen = true, bounds, rail, bookW, bookH, grabbed;
 let cursor = {x:0,y:0};
 function mediaImage(item,{lazy=false,label='',draggable=false}={}) {
@@ -36,15 +36,31 @@ function mediaImage(item,{lazy=false,label='',draggable=false}={}) {
   return picture;
 }
 
+const coverImages = ['./media/opening-03.jpg', './media/photo-0.jpg', './media/opening-09.jpg', './media/photo-7.jpg'];
 const albums = new Map(topics.map((topic, index) => {
-  const section = element('section','media-album');
-  const title = element('h3','album-title',topic);
-  const grid = element('div','gallery-grid');
-  title.id = 'album-' + index;
-  section.setAttribute('aria-labelledby', title.id);
-  section.append(title, grid);
-  mediaGrid.append(section);
-  return [topic, {section, grid}];
+  const cover = element('button', 'album-cover');
+  const photo = element('img');
+  const panel = element('section', 'media-album');
+  const clip = element('div', 'album-clip');
+  const grid = element('div', 'gallery-grid');
+  photo.src = coverImages[index];
+  photo.alt = '';
+  photo.loading = 'lazy';
+  cover.type = 'button';
+  cover.id = 'album-cover-' + index;
+  panel.id = 'album-panel-' + index;
+  cover.setAttribute('aria-controls', panel.id);
+  panel.setAttribute('aria-labelledby', cover.id);
+  cover.append(photo, element('span', 'album-name', topic));
+  cover.addEventListener('click', () => {
+    openAlbum = openAlbum === topic ? null : topic;
+    updateGallery();
+  });
+  clip.append(grid);
+  panel.append(clip);
+  albumCovers.append(cover);
+  mediaGrid.append(panel);
+  return [topic, {cover, panel, grid}];
 }));
 
 const tiles = sorted.map(item => {
@@ -61,26 +77,28 @@ const tiles = sorted.map(item => {
 function updateGallery() {
   const q = normalize(search.value);
   matches = sorted.filter((item, i) => {
-    const show = (group === 'Все материалы' || item.group === group) &&
-      normalize(item.title + ' ' + item.group + (item.gif ? ' gif видео рилс' : ' фото')).includes(q);
+    const show = normalize(item.title + ' ' + item.group + (item.gif ? ' gif видео рилс' : ' фото')).includes(q);
     tiles[i].hidden = !show;
     return show;
   });
   const visibleGroups = new Set(matches.map(item => item.group));
-  albums.forEach(({section}, topic) => { section.hidden = !visibleGroups.has(topic); });
-  galleryButtons.forEach(button => button.setAttribute('aria-pressed', String(button.textContent === group)));
-  document.getElementById('gallery-count').textContent = matches.length
-    ? 'Материалов: ' + matches.length : 'Ничего не найдено. Попробуйте другой запрос.';
+  if (q && !visibleGroups.has(openAlbum) && openAlbum !== null) openAlbum = visibleGroups.values().next().value ?? null;
+  albums.forEach(({cover, panel}, topic) => {
+    const expanded = topic === openAlbum && visibleGroups.has(topic);
+    cover.hidden = !visibleGroups.has(topic);
+    cover.setAttribute('aria-expanded', String(expanded));
+    panel.classList.toggle('is-open', expanded);
+    panel.inert = !expanded;
+  });
+  document.getElementById('gallery-count').textContent = q
+    ? (matches.length ? 'Найдено материалов: ' + matches.length : 'Ничего не найдено. Попробуйте другой запрос.')
+    : '';
 }
 
-galleryButtons = ['Все материалы',...topics].map(topic => {
-  const button = element('button','',topic);
-  button.type = 'button';
-  button.addEventListener('click', () => { group = topic; updateGallery(); });
-  filters.append(button);
-  return button;
+search.addEventListener('input', () => {
+  if (!openAlbum) openAlbum = topics[0];
+  updateGallery();
 });
-search.addEventListener('input',updateGallery);
 updateGallery();
 
 function showMedia() {
@@ -315,9 +333,9 @@ function createGalleryTransition() {
     const heroTop=box.top+y;
     const start=heroTop+box.height*.08;
     const finish=Math.max(start+box.height*.52,
-      mediaGrid.getBoundingClientRect().top+y-viewport*.36);
+      albums.get(topics[0]).panel.getBoundingClientRect().top+y-viewport*.36);
     const wanted=Math.max(0,Math.min(1,(y-start)/(finish-start)));
-    if (reduce.matches || dialog.open || y>finish+viewport*.72 || (!state.active && (wanted===0 || wanted===1))) {
+    if (openAlbum !== topics[0] || reduce.matches || dialog.open || y>finish+viewport*.72 || (!state.active && (wanted===0 || wanted===1))) {
       if(state.active) {reset();state.dirty=false;}
       return;
     }
@@ -337,7 +355,7 @@ function createGalleryTransition() {
     const reveal=Math.max(0,(progress-.82)/.18);
     const mix=(a,b)=>a+(b-a)*eased;
     for(const {book,target,card} of pairs){
-      if(book.button.hidden || target.closest('[hidden]')){
+      if(book.button.hidden || target.closest('[hidden], [inert]')){
         card.hidden=true;
         target.style.removeProperty('--landing-opacity');
         continue;
